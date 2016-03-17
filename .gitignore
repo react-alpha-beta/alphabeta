@@ -1,0 +1,8 @@
+.DS_Store
+*.bak
+*.log
+*.swp
+node_modules
+dist
+lib
+coverage
