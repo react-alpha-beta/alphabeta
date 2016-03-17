@@ -2,7 +2,7 @@
 
 AlphaBeta is a simple declarative A/B testing component for React.
 
-### Linting
+### Lint
 ```bash
 $ npm run lint
 ```
