@@ -1,0 +1,16 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+
+  /* Generated with http://gradient.quasi.ink */
+  background-size: cover;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAADCAYAAABfwxXFAAAATklEQVQIWx3Luw2AMAwA0XNiJwHE1DQgMQdMwzY0SAnmc82rTo558qzQK4xFSIORo6AWkGtb3FJASobWgBss8h1y7qt3UkEDJOWvOv76ANrGEbpss8oJAAAAAElFTkSuQmCC");
+}
