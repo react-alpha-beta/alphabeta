@@ -22,7 +22,11 @@ export default {
         exclude: /node_modules/,
       },
       {
-        test: /\.(html|css)$/,
+        test: /\.css$/,
+        loaders: ['style', 'css'],
+      },
+      {
+        test: /\.html$/,
         loaders: ['file?name=[name].[ext]'],
       },
     ],

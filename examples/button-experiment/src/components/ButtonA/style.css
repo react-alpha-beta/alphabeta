@@ -1,0 +1,11 @@
+.button-border {
+  background: transparent;
+  border: 2px solid #2b90d9;
+  color: #2b90d9;
+}
+
+.button-border:hover {
+  background: #2b90d9;
+  border-color: #2b90d9;
+  color: white;
+}

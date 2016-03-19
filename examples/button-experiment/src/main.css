@@ -10,7 +10,52 @@ body {
   width: 100%;
   height: 100%;
 
+  /* Vertically & horizontally center elements. */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   /* Generated with http://gradient.quasi.ink */
   background-size: cover;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAADCAYAAABfwxXFAAAATklEQVQIWx3Luw2AMAwA0XNiJwHE1DQgMQdMwzY0SAnmc82rTo558qzQK4xFSIORo6AWkGtb3FJASobWgBss8h1y7qt3UkEDJOWvOv76ANrGEbpss8oJAAAAAElFTkSuQmCC");
+  /*
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAADCAYAAABfwxXFAAAAVUlEQVQIWyXJMQ5AQBBA0b+zlpBQ0Ck0buYuzuAILqFRKVXuIhs7I+K1zy3HZX0Q8icRVbnNUIWohpu304aqoBZwAopB0j+ndbexbeiCUAaHeMj4eF6KJx21I/v0ggAAAABJRU5ErkJggg==");
+   */
+}
+
+.button {
+  border: 0 none;
+  border-radius: 24px;
+
+  padding: 12px 18px;
+  margin: 10px;
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 0 0 160px;
+
+  text-align: center;
+  line-height: 1.3;
+  font-size: 14px;
+  color: #fff;
+  text-transform: none;
+
+  font-weight: 500;
+
+  transition: all 60ms ease-in-out;
+}
+
+.button:hover {
+  opacity: .90;
+  transition: all 60ms ease;
+}
+
+.button:active {
+  opacity: .75;
+  transform: scale(.97);
+  transition: all 60ms ease;
 }
