@@ -11,7 +11,6 @@ class AlphaBetaComponent extends React.Component {
     ComponetA: React.PropTypes.func,
     ComponetB: React.PropTypes.func,
     successAction: React.PropTypes.func,
-    passThruProperties: React.PropTypes.object,
     // cohortStore: React.PropTypes.object,
   };
 
@@ -55,17 +54,15 @@ class AlphaBetaComponent extends React.Component {
   };
 
   render() {
-    const { ComponetA, ComponetB, passThruProperties } = this.props;
+    const { ComponetA, ComponetB } = this.props;
 
     if (this.state.isInCohort === true) {
       return (
-        <ComponetB passThruProperties={passThruProperties}
-                   successAction={this.successAction.bind(event)} />
+        <ComponetB successAction={this.successAction.bind(event)} />
       );
     }
     return (
-      <ComponetA passThruProperties={passThruProperties}
-                 successAction={this.successAction.bind(event)} />
+      <ComponetA successAction={this.successAction.bind(event)} />
     );
   }
 }
