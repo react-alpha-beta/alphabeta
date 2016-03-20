@@ -8,8 +8,8 @@ class AlphaBetaComponent extends React.Component {
 
   static propTypes = {
     experimentParams: React.PropTypes.object,
-    ComponetA: React.PropTypes.func,
-    ComponetB: React.PropTypes.func,
+    ComponentA: React.PropTypes.func,
+    ComponentB: React.PropTypes.func,
     successAction: React.PropTypes.func,
     // cohortStore: React.PropTypes.object,
   };
@@ -54,15 +54,15 @@ class AlphaBetaComponent extends React.Component {
   };
 
   render() {
-    const { ComponetA, ComponetB } = this.props;
+    const { ComponentA, ComponentB } = this.props;
 
     if (this.state.isInCohort === true) {
       return (
-        <ComponetB successAction={this.successAction.bind(event)} />
+        <ComponentB successAction={this.successAction.bind(event)} />
       );
     }
     return (
-      <ComponetA successAction={this.successAction.bind(event)} />
+      <ComponentA successAction={this.successAction.bind(event)} />
     );
   }
 }
