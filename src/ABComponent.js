@@ -8,8 +8,8 @@ class AlphaBetaComponent extends React.Component {
 
   static propTypes = {
     experimentParams: React.PropTypes.object,
-    ComponetA: React.PropTypes.func,
-    ComponetB: React.PropTypes.func,
+    ComponentA: React.PropTypes.func,
+    ComponentB: React.PropTypes.func,
     successAction: React.PropTypes.func,
     // cohortStore: React.PropTypes.object,
   };
@@ -31,38 +31,38 @@ class AlphaBetaComponent extends React.Component {
 
   componentDidMount() {
     // record that the AlphaBeta component was loaded
-    let varient;
+    let variant;
     if (this.state.isInCohort === true) {
-      varient = 'b';
+      variant = 'b';
     } else {
-      varient = 'a';
+      variant = 'a';
     }
-    postExperimentData(this.props.experimentParams.id, varient);
+    postExperimentData(this.props.experimentParams.id, variant);
   }
 
   successAction = (event) => {
     // record that successAction occured
-    let varient;
+    let variant;
     if (this.state.isInCohort === true) {
-      varient = 'b';
+      variant = 'b';
     } else {
-      varient = 'a';
+      variant = 'a';
     }
-    postExperimentData(this.props.experimentParams.id, varient, true);
+    postExperimentData(this.props.experimentParams.id, variant, true);
     // fire the successAction event
     this.props.successAction(event);
   };
 
   render() {
-    const { ComponetA, ComponetB } = this.props;
+    const { ComponentA, ComponentB } = this.props;
 
     if (this.state.isInCohort === true) {
       return (
-        <ComponetB successAction={this.successAction.bind(event)} />
+        <ComponentB successAction={this.successAction.bind(event)} />
       );
     }
     return (
-      <ComponetA successAction={this.successAction.bind(event)} />
+      <ComponentA successAction={this.successAction.bind(event)} />
     );
   }
 }
