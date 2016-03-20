@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import AlphaBetaComponent from '../../../src/ABComponent';
+
 import './index.html';
 import './main.css';
 
 import ButtonA from './components/ButtonA';
 import ButtonB from './components/ButtonB';
-import AlphaBetaComponent from '../../../src/ABComponent';
 
 class Page extends React.Component {
   
@@ -18,7 +19,7 @@ class Page extends React.Component {
     return (
       <div>
         <AlphaBetaComponent
-        	successAction={this.successAction.bind(event)}
+        	successAction={this.successAction}
         	ComponentA={ButtonA}
         	ComponentB={ButtonB} 
         	experimentParams={{"id":'123'}}/>
