@@ -7,7 +7,7 @@ export function isInCohort(experimentParams) {
     alphaBetaMap = {};
   }
 
-  if (!experimentParams.id in alphaBetaMap) {
+  if (!(experimentParams.id in alphaBetaMap)) {
     alphaBetaMap[experimentParams.id] = Math.random();
     const jsonStr = JSON.stringify(alphaBetaMap);
     global.localStorage.setItem('alphaBetaMap', jsonStr);
