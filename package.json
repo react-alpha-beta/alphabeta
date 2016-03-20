@@ -48,6 +48,7 @@
     "enzyme": "^2.1.0",
     "eslint": "^2.4.0",
     "eslint-plugin-react": "^4.2.3",
+    "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
     "webpack": "^1.12.14",
