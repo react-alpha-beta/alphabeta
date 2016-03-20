@@ -1,63 +1,70 @@
 import React from 'react';
 
-import getExperimentsUserIsPartOf from 'getExperimentsUserIsPartOf';
-import { cohortRefreshRate } from 'settings';
+import {isInCohort} from './Cohort';
+import {postExperimentData} from './Experiment';
 
 class AlphaBetaComponent extends React.Component {
   // static displayName =
 
   static propTypes = {
+    experimentParams: React.PropTypes.object,
     ComponetA: React.PropTypes.func,
     ComponetB: React.PropTypes.func,
     successAction: React.PropTypes.func,
     passThruProperties: React.PropTypes.object,
-    cohortStore: React.PropTypes.object,
+    // cohortStore: React.PropTypes.object,
   };
 
   constructor(props) {
     super(props);
-    // this.state = {
-    // };
+    this.state = {
+      isInCohort: false,
+    };
+  }
+
+  componentWillMount() {
+    if (isInCohort(this.props.experimentParams) === true) {
+      this.setState({
+        isInCohort: true,
+      });
+    }
   }
 
   componentDidMount() {
-    // get (or set) this user's alphaBetaHash (for unique identification)
-    let alphaBetaHash = window.localStorage.getItem('alphabeta');
-    if (alphaBetaHash === null) {
-      alphaBetaHash = Math.random();
-      window.localStorage.setItem('alphaBetaHash', alphaBetaHash);
+    // record that the AlphaBeta component was loaded
+    let varient;
+    if (this.state.isInCohort === true) {
+      varient = 'b';
+    } else {
+      varient = 'a';
     }
-
-    // get (or set) this user's alphaBetaExperimentObj - a dictionary where each key
-    // is the uniqueId of an experiment this user is currently part of
-    let alphaBetaExperimentObj = window.localStorage.getItem('alphabetaexpdict');
-    if (alphaBetaExperimentObj === null || alphaBetaExperimentObj.timestamp < ((Date.now() / 1000) - cohortRefreshRate)) {
-      // re-set this users alphaBetaExperimentObj
-      alphaBetaExperimentObj = getExperimentsUserIsPartOf(alphaBetaHash);
-      window.localStorage.setItem('alphaBetaExpDict', alphaBetaExperimentObj);
-    }
-
-    // TODO: record that the AlphaBeta component was loaded
-    this.setState({alphaBetaExpDict: alphaBetaExperimentObj});
+    postExperimentData(this.props.experimentParams.id, varient);
   }
 
   successAction = (event) => {
+    // record that successAction occured
+    let varient;
+    if (this.state.isInCohort === true) {
+      varient = 'b';
+    } else {
+      varient = 'a';
+    }
+    postExperimentData(this.props.experimentParams.id, varient, true);
     // fire the successAction event
     this.props.successAction(event);
-    // TODO: record that successAction occured
   };
 
   render() {
     const { ComponetA, ComponetB, passThruProperties } = this.props;
 
-    if (this.props.cohortStore.inCohort === true) {
+    if (this.state.isInCohort === true) {
       return (
-        <ComponetA passThruProperties={passThruProperties}
+        <ComponetB passThruProperties={passThruProperties}
                    successAction={this.successAction.bind(event)} />
       );
     }
     return (
-      <ComponetB passThruProperties={passThruProperties}
+      <ComponetA passThruProperties={passThruProperties}
                  successAction={this.successAction.bind(event)} />
     );
   }
