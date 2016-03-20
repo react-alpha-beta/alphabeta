@@ -40,7 +40,7 @@ class AlphaBetaComponent extends React.Component {
     postExperimentData(this.props.experimentParams.id, variant);
   }
 
-  successAction = (event) => {
+  successAction = (...args) => {
     // record that successAction occured
     let variant;
     if (this.state.isInCohort === true) {
@@ -50,7 +50,7 @@ class AlphaBetaComponent extends React.Component {
     }
     postExperimentData(this.props.experimentParams.id, variant, true);
     // fire the successAction event
-    this.props.successAction(event);
+    this.props.successAction(...args);
   };
 
   render() {
@@ -58,11 +58,11 @@ class AlphaBetaComponent extends React.Component {
 
     if (this.state.isInCohort === true) {
       return (
-        <ComponentB successAction={this.successAction.bind(event)} />
+        <ComponentB successAction={this.successAction} />
       );
     }
     return (
-      <ComponentA successAction={this.successAction.bind(event)} />
+      <ComponentA successAction={this.successAction} />
     );
   }
 }
