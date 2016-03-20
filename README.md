@@ -1,6 +1,51 @@
 # AlphaBeta
 
-AlphaBeta lets you build split tests (A/B tests) directly into your React app.
+AlphaBeta lets you build split tests (A/B tests) directly into 
+your React app.
+
+
+Building your first A/B is as simple:
+
+    import {AlphaBetaComponent} from alphabeta;
+    import {ButtonA, ButtonB} from "../yourCode"
+
+
+    class Page extends React.Component {
+        
+        buttonClickedEvent: () => {
+            console.info("Button clicked")
+        }
+
+        render() {
+            return (
+                <div>
+                    <AlphaBetaComponent
+                        ComponentA={ButtonA}
+                        ComponentB={ButtonB}
+                        onSuccessEvent={buttonClickedEvent}/>
+                 </div>
+            );
+          }
+        }
+
+    ReactDOM.render(
+      <Page />,
+      document.getElementById('app')
+    );
+
+If the use clicked the button, posted to the console:
+
+    L: {"experimentId": "Page:ButtonA:ButtonA",
+       "variant": "ButtonA"|"ButtonB"}
+    L: {"experimentId": "Page:ButtonA:ButtonB",
+       "variant": "ButtonA"|"ButtonB",
+       "success": true}
+    I: "Button clicked"
+
+// Leaving specifying config to Jack
+
+// Probably just global vars on the window object
+
 
 ### TL;DR
 AlphaBeta is...
