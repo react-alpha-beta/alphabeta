@@ -66,10 +66,9 @@ class ABComponent extends React.Component {
 
   render() {
     const { ComponentA, ComponentB } = this.props;
-    if (this.state.isInCohort === true) {
-      return this.renderElementOrComponent(ComponentA);
-    }
-    return this.renderElementOrComponent(ComponentB);
+    return this.state.isInCohort ?
+        this.renderElementOrComponent(ComponentB)
+        : this.renderElementOrComponent(ComponentA);
   }
 }
 

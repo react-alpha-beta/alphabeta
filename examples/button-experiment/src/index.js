@@ -16,7 +16,7 @@ class Page extends React.Component {
           <ABComponent
               experimentParams={{
                 id: 'button-experiment',
-                testCohortSize: 0.8,
+                testCohortSize: 0.4,
               }}
               ComponentA={ButtonA}
               ComponentB={ButtonB} />

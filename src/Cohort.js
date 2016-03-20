@@ -12,5 +12,5 @@ export function isInCohort(experimentParams) {
     const jsonStr = JSON.stringify(alphaBetaMap);
     global.localStorage.setItem('alphaBetaMap', jsonStr);
   }
-  return (alphaBetaMap[experimentParams.id] <= experimentParams.testCohortSize);
+  return (alphaBetaMap[experimentParams.id] < experimentParams.testCohortSize);
 }

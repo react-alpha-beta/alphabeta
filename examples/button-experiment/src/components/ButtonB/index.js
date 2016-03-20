@@ -10,7 +10,7 @@ class ButtonB extends React.Component {
   render() {
     return (
       <div className="button button-blue">
-        {this.props.text || 'Button Variant A'}
+        {this.props.text || 'Button Variant B'}
       </div>
     );
   }
