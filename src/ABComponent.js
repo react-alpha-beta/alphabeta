@@ -31,24 +31,24 @@ class AlphaBetaComponent extends React.Component {
 
   componentDidMount() {
     // record that the AlphaBeta component was loaded
-    let varient;
+    let variant;
     if (this.state.isInCohort === true) {
-      varient = 'b';
+      variant = 'b';
     } else {
-      varient = 'a';
+      variant = 'a';
     }
-    postExperimentData(this.props.experimentParams.id, varient);
+    postExperimentData(this.props.experimentParams.id, variant);
   }
 
   successAction = (event) => {
     // record that successAction occured
-    let varient;
+    let variant;
     if (this.state.isInCohort === true) {
-      varient = 'b';
+      variant = 'b';
     } else {
-      varient = 'a';
+      variant = 'a';
     }
-    postExperimentData(this.props.experimentParams.id, varient, true);
+    postExperimentData(this.props.experimentParams.id, variant, true);
     // fire the successAction event
     this.props.successAction(event);
   };
