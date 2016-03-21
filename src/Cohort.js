@@ -1,14 +1,16 @@
 export function isInCohort(experimentParams) {
-  let alphaBetaMap = window.localStorage.getItem('alphaBetaMap');
-  if (alphaBetaMap === null) {
+  let alphaBetaMap;
+  try {
+    const jsonStr = global.localStorage.getItem('alphaBetaMap');
+    alphaBetaMap = jsonStr && JSON.parse(jsonStr) || {};
+  } catch (err) {
     alphaBetaMap = {};
   }
-  if (!experimentParams.id in alphaBetaMap) {
+
+  if (!(experimentParams.id in alphaBetaMap)) {
     alphaBetaMap[experimentParams.id] = Math.random();
-    window.localStorage.setItem('alphaBetaMap', alphaBetaMap);
+    const jsonStr = JSON.stringify(alphaBetaMap);
+    global.localStorage.setItem('alphaBetaMap', jsonStr);
   }
-  if (alphaBetaMap[experimentParams.id] <= experimentParams.testCohortSize) {
-    return true;
-  }
-  return false;
+  return (alphaBetaMap[experimentParams.id] < experimentParams.testCohortSize);
 }

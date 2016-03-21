@@ -1,4 +1,4 @@
-import {experimentEndpoint} from './settings';
+import { experimentEndpoint } from './settings';
 
 export function postExperimentData(experimentId, variant, success = null, impressionId = null) {
   return fetch(experimentEndpoint + '/' + experimentId + '/', {

@@ -1,7 +1,5 @@
-// import ABComponent from './ABComponent';
-import DummyComponent from './DummyComponent';
+import ABComponent from './ABComponent';
 
 export {
-  // ABComponent,
-  DummyComponent,
+  ABComponent,
 };

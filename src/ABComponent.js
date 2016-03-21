@@ -1,15 +1,27 @@
 import React from 'react';
 
-import {isInCohort} from './Cohort';
-import {postExperimentData} from './Experiment';
+import { isInCohort } from './Cohort';
+import { postExperimentData } from './Experiment';
 
-class AlphaBetaComponent extends React.Component {
-  // static displayName =
+class ABComponent extends React.Component {
+  static displayName = 'ABComponent';
 
   static propTypes = {
     experimentParams: React.PropTypes.object,
-    ComponentA: React.PropTypes.func,
-    ComponentB: React.PropTypes.func,
+    // ComponentA/B can be either React element or React component.
+    ComponentA: React.PropTypes.oneOfType([
+      React.PropTypes.element,
+      // https://github.com/facebook/react/issues/5143#issuecomment-147473269
+      React.PropTypes.oneOfType(
+        [React.PropTypes.string, React.PropTypes.func]
+      ),
+    ]),
+    ComponentB: React.PropTypes.oneOfType([
+      React.PropTypes.element,
+      React.PropTypes.oneOfType(
+        [React.PropTypes.string, React.PropTypes.func]
+      ),
+    ]),
     successAction: React.PropTypes.func,
     // cohortStore: React.PropTypes.object,
   };
@@ -31,40 +43,33 @@ class AlphaBetaComponent extends React.Component {
 
   componentDidMount() {
     // record that the AlphaBeta component was loaded
-    let variant;
-    if (this.state.isInCohort === true) {
-      variant = 'b';
-    } else {
-      variant = 'a';
-    }
+    const variant = this.state.isInCohort ? 'b' : 'a';
     postExperimentData(this.props.experimentParams.id, variant);
   }
 
-  successAction = (event) => {
+  successAction = (...args) => {
     // record that successAction occured
-    let variant;
-    if (this.state.isInCohort === true) {
-      variant = 'b';
-    } else {
-      variant = 'a';
-    }
+    const variant = this.state.isInCohort ? 'b' : 'a';
     postExperimentData(this.props.experimentParams.id, variant, true);
     // fire the successAction event
-    this.props.successAction(event);
+    this.props.successAction(...args);
   };
+
+  renderElementOrComponent(elemOrComp) {
+    const props = {
+      successAction: this.successAction,
+    };
+    return React.isValidElement(elemOrComp) ?
+        React.cloneElement(elemOrComp, props)
+        : React.createElement(elemOrComp, props);
+  }
 
   render() {
     const { ComponentA, ComponentB } = this.props;
-
-    if (this.state.isInCohort === true) {
-      return (
-        <ComponentB successAction={this.successAction.bind(event)} />
-      );
-    }
-    return (
-      <ComponentA successAction={this.successAction.bind(event)} />
-    );
+    return this.state.isInCohort ?
+        this.renderElementOrComponent(ComponentB)
+        : this.renderElementOrComponent(ComponentA);
   }
 }
 
-export default AlphaBetaComponent;
+export default ABComponent;

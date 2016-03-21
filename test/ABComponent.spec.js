@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 
-import { ButtonA, ButtonB, ButtonC } from './fixture';
+import { ButtonA, ButtonB } from './fixture';
 import { ABComponent } from '../src';
 
 describe('<ABComponent />', () => {
@@ -10,46 +10,120 @@ describe('<ABComponent />', () => {
     global.localStorage.clear();
   });
 
-  const mountButton = () => {
-    return mount(
-      <ABComponent
-          experimentId="button-experiment"
-          variants={[
-            { component: ButtonA, occurrence: 0.4 },
-            { component: ButtonB, occurrence: 0.3 },
-            { component: ButtonC, occurrence: 0.3 },
-          ]} />
-    );
-  };
+  describe('A or B being Component', () => {
+    it('should render <ButtonA /> when random number is 0.4 and testCohortSize is 0.4', () => {
+      Math.random = () => 0.4;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={ButtonA}
+          ComponentB={ButtonB} />
+      );
+      expect(wrapper.contains(<div>ButtonA</div>)).to.equal(true);
+    });
 
-  it('should render <ButtonA />', () => {
-    // Mock Math.random() to give the desired value for testing.
-    Math.random = () => 0;
-    expect(mountButton().contains(<div>ButtonA</div>)).to.equal(true);
+    it('should render <ButtonA /> when random number is 0.7 and testCohortSize is 0.4', () => {
+      Math.random = () => 0.7;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={ButtonA}
+          ComponentB={ButtonB} />
+      );
+      expect(wrapper.contains(<div>ButtonA</div>)).to.equal(true);
+    });
+
+    it('should render <ButtonB /> when random number is 0.39 and testCohortSize is 0.4', () => {
+      Math.random = () => 0.39;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={ButtonA}
+          ComponentB={ButtonB} />
+      );
+      expect(wrapper.contains(<div>ButtonB</div>)).to.equal(true);
+    });
+
+    it('should render <ButtonB /> when random number is 0 and testCohortSize is 0.4', () => {
+      Math.random = () => 0;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={ButtonA}
+          ComponentB={ButtonB} />
+      );
+      expect(wrapper.contains(<div>ButtonB</div>)).to.equal(true);
+    });
   });
 
-  it('should render <ButtonA />', () => {
-    Math.random = () => 0.312;
-    expect(mountButton().contains(<div>ButtonA</div>)).to.equal(true);
-  });
 
-  it('should render <ButtonB />', () => {
-    Math.random = () => 0.4;
-    expect(mountButton().contains(<div>ButtonB</div>)).to.equal(true);
-  });
+  describe('A or B being React element', () => {
+    it('should render <ButtonA /> with value of text prop when random number is 0.4 and testCohortSize is 0.4', () => {
+      Math.random = () => 0.4;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={<ButtonA text="Alternate Text A" />}
+          ComponentB={<ButtonA text="Alternate Text B" />} />
+      );
+      expect(wrapper.contains(<div>Alternate Text A</div>)).to.equal(true);
+    });
 
-  it('should render <ButtonB />', () => {
-    Math.random = () => 0.58;
-    expect(mountButton().contains(<div>ButtonB</div>)).to.equal(true);
-  });
+    it('should render <ButtonA /> with value of text prop when random number is 0.7 and testCohortSize is 0.4', () => {
+      Math.random = () => 0.7;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={<ButtonA text="Alternate Text A" />}
+          ComponentB={<ButtonA text="Alternate Text B" />} />
+      );
+      expect(wrapper.contains(<div>Alternate Text A</div>)).to.equal(true);
+    });
 
-  it('should render <ButtonC />', () => {
-    Math.random = () => 0.7;
-    expect(mountButton().contains(<div>ButtonC</div>)).to.equal(true);
-  });
+    it('should render <ButtonB /> with value of text prop when random number is 0.39 and testCohortSize is 0.4', () => {
+      Math.random = () => 0.39;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={<ButtonA text="Alternate Text A" />}
+          ComponentB={<ButtonA text="Alternate Text B" />} />
+      );
+      expect(wrapper.contains(<div>Alternate Text B</div>)).to.equal(true);
+    });
 
-  it('should render <ButtonC />', () => {
-    Math.random = () => 0.89;
-    expect(mountButton().contains(<div>ButtonC</div>)).to.equal(true);
+    it('should render <ButtonB /> with value of text prop when random number is 0 and testCohortSize is 0.4', () => {
+      Math.random = () => 0;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={<ButtonA text="Alternate Text A" />}
+          ComponentB={<ButtonA text="Alternate Text B" />} />
+      );
+      expect(wrapper.contains(<div>Alternate Text B</div>)).to.equal(true);
+    });
   });
 });
