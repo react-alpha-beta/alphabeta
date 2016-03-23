@@ -118,6 +118,10 @@ $ npm run test  # run once
 $ npm run test:watch  # continuous testing as file changes
 ```
 
+### Resources
+* [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
+* [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
+
 ### License
 MIT
 
