@@ -57,6 +57,9 @@ AlphaBeta is...
 * **extensible:** AlphaBeta is designed to make it easy for developers to integrate basic split tests into their React apps without having to think about the the underlying statistics. But it's also possible to build your own custom logic around how confidence intervals are calculated and how user cohorting works within your app.
 
 ### Installation
+```bash
+$ npm install react-alphabeta
+```
 
 ### Setup
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This isn't unique to AlphaBeta - it's true of split testing in general. Imagine, for example, that you're running an experiment on your landing page to see if changing your "Sign Up" button from blue to orange leads to more users clicking it. To measure which color performs better, you need to keep track of the number of times each buton is seen (impressions) and clicked (success events or conversions).
