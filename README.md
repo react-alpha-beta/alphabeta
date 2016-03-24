@@ -69,7 +69,7 @@ The URL for your endpont can be whatever you want it to be, but it must be able 
 So if your endpoint is located at https://www.yoursite.com/api/alphabeta/ then https://www.yoursite.com/api/alphabeta/{{experimentId}}/ MUST return data about {{experimentId}} when it receives a GET request and MUST save data about {{experimentId}} when it receives a POST request.
 You can also have the base url (the url when no experimentId is passed) return a list of your experiments. This is not required, but may be useful.
 When AlphaBeta POSTs data to your endpoint, the POST body will look like this
-⋅⋅⋅```js
+```js
 {
   variant: "a",   // this will either be "a" or "b"
   success: null,  // this will either be null or true
@@ -83,7 +83,7 @@ When AlphaBeta POSTs data to your endpoint, the POST body will look like this
 ⋅⋅⋅**metaId** is a value that you can optionally pass to your AlphaBeta component. It should be used when the component you're testing occurs multiple times on your site. The earlier example where we were testing the color of a "Sign Up" button on your landing page would be a case where the **metaId** property is not necessary, as user will only see the Sign Up button in one context. But suppose you instead were testing the copy on a facebook-style "like" button to see if it made sense to change it to "+1". Each piece of content a user views has a "like" (or "+1) button below it, and a single user could see (and "like") multiple pieces of content. In cases like these, you could set a **metaId** that uniquely identfies the piece of content. If you set the **metaId** in this way, you would be testing which variant leads to more total likes per content impression. If you did not set the **metaId** at all, you would be testing which variant leads to a user liking at least one piece of content.
 
 ⋅⋅⋅When AlphaBeta GETs data from your endpoint, the returned data should look like this
-⋅⋅⋅```js
+```js
 {
   variantA: {
     trialCount: 291,    // the number of times this variant has been seen
