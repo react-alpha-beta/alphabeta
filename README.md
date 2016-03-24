@@ -65,18 +65,18 @@ $ npm install react-alphabeta
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This isn't unique to AlphaBeta - it's true of split testing in general. Imagine, for example, that you're running an experiment on your landing page to see if changing your "Sign Up" button from blue to orange leads to more users clicking it. To measure which color performs better, you need to keep track of the number of times each buton is seen (impressions) and clicked (success events or conversions).
 You can connect AlphaBeta to a datastore you're already using in three steps.
 * **Step 1:** Build an endpoint for AlphaBeta to POST data to and GET data from.
-The URL for your endpont can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an experiment id.
-So if your endpoint is located at https://www.yoursite.com/api/alphabeta/ then https://www.yoursite.com/api/alphabeta/{{experimentId}}/ MUST return data about {{experimentId}} when it receives a GET request and MUST save data about {{experimentId}} when it receives a POST request.
-You can also have the base url (the url when no experimentId is passed) return a list of your experiments. This is not required, but may be useful.
-When AlphaBeta POSTs data to your endpoint, the POST body will look like this
-```js
-{
-  variant: "a",   // this will either be "a" or "b"
-  success: null,  // this will either be null or true
-  userId: .10392  // a number between 0 and 1
-  metaId: null,   // this will be null unless you choose to set it
-}
-```
+  The URL for your endpont can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an experiment id.
+  So if your endpoint is located at https://www.yoursite.com/api/alphabeta/ then https://www.yoursite.com/api/alphabeta/{{experimentId}}/ MUST return data about {{experimentId}} when it receives a GET request and MUST save data about {{experimentId}} when it receives a POST request.
+  You can also have the base url (the url when no experimentId is passed) return a list of your experiments. This is not required, but may be useful.
+  When AlphaBeta POSTs data to your endpoint, the POST body will look like this
+  ```js
+  {
+    variant: "a",   // this will either be "a" or "b"
+    success: null,  // this will either be null or true
+    userId: .10392  // a number between 0 and 1
+    metaId: null,   // this will be null unless you choose to set it
+  }
+  ```
   **variant** tells your datastore which component variant (a or b) was presented to a particular user.
   **success** tells your datastore whether the success event occured (true) not (null). Note that the value for this parameter will either be true or null, as opposed to true or false. When **success** is passed as null, that signals that an sample event has occured (a user saw a variant of whatever it is that you're testing). It is passed as null because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as true, that signals that a success event has occured.
   **userId** is a number between 0 and 1 that AlphaBeta has associated with the particular user in this experiment. It has nothing to do with any other userIds that might be used elsewhere in your application.
