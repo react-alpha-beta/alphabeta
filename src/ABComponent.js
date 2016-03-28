@@ -44,15 +44,19 @@ class ABComponent extends React.Component {
   componentDidMount() {
     // record that the AlphaBeta component was loaded
     const variant = this.state.isInCohort ? 'b' : 'a';
-    postExperimentData(this.props.experimentParams.id, variant);
+    postExperimentData(this.props.experimentParams.id, variant, false);
   }
 
   successAction = (...args) => {
     // record that successAction occured
     const variant = this.state.isInCohort ? 'b' : 'a';
+
     postExperimentData(this.props.experimentParams.id, variant, true);
-    // fire the successAction event
-    this.props.successAction(...args);
+    if (this.props.successAction !== undefined) {
+      // fire the successAction event only if it was passed down to the variant
+      // components
+      this.props.successAction(...args);
+    }
   };
 
   renderElementOrComponent(elemOrComp) {

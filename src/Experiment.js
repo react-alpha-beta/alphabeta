@@ -1,16 +1,23 @@
-import { experimentEndpoint } from './settings';
+// import { defaultsettings } from './defaultsettings';
+import { SETTINGS } from './defaultSettings';
 
-export function postExperimentData(experimentId, variant, success = null, impressionId = null) {
-  return fetch(experimentEndpoint + '/' + experimentId + '/', {
-    method: 'POST',
+export function postExperimentData(experimentId, variant, success = null, metaId = null) {
+  let alphaBetaEndpoint = process.env.ALPHA_BETA_ENDPOINT;
+  if (alphaBetaEndpoint === undefined) {
+    alphaBetaEndpoint = SETTINGS.experimentEndPoint;
+  }
+  return fetch(alphaBetaEndpoint + '/' + experimentId + '/', {
+    method: 'PATCH',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      variant: variant,
+      experimentId: experimentId,
+      metaId: metaId,
       success: success,
-      impressionId: impressionId,
+      userId: JSON.parse(global.localStorage.getItem('alphaBetaMap'))[experimentId],
+      variant: variant,
     }),
   });
 }

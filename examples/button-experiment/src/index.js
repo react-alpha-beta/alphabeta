@@ -9,27 +9,30 @@ import ButtonA from './components/ButtonA';
 import ButtonB from './components/ButtonB';
 
 class Page extends React.Component {
+
   render() {
     return (
       <div>
         <div>
           <ABComponent
               experimentParams={{
-                id: 'button-experiment',
+                id: '1',
                 testCohortSize: 0.4,
               }}
               ComponentA={ButtonA}
-              ComponentB={ButtonB} />
+              ComponentB={ButtonB}
+          />
         </div>
 
         <div>
           <ABComponent
               experimentParams={{
-                id: 'button-experiment-2',
+                id: '2',
                 testCohortSize: 0.4,
               }}
               ComponentA={<ButtonA text="Alternate Text A" />}
-              ComponentB={<ButtonB text="Alternate Text B" />} />
+              ComponentB={<ButtonB text="Alternate Text B" />}
+          />
         </div>
       </div>
     );
