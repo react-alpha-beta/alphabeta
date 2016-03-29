@@ -23,8 +23,12 @@ export default {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /^((?!\.module).)*\.css$/,
         loaders: ['style', 'css'],
+      },
+      {
+        test: /\.module\.css$/,
+        loaders: ['style', 'css?modules&sourceMap'],
       },
       {
         test: /\.html$/,

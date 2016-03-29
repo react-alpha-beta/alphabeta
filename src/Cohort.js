@@ -1,9 +1,10 @@
+import { localStorageKey } from './constants';
+
 export function isInCohort(experimentParams) {
   let alphaBetaMap;
   try {
-    const jsonStr = global.localStorage.getItem('alphaBetaMap');
+    const jsonStr = global.localStorage.getItem(localStorageKey);
     alphaBetaMap = jsonStr && JSON.parse(jsonStr) || {};
-    console.log(jsonStr)
   } catch (err) {
     alphaBetaMap = {};
   }
@@ -11,7 +12,7 @@ export function isInCohort(experimentParams) {
   if (!(experimentParams.id in alphaBetaMap)) {
     alphaBetaMap[experimentParams.id] = Math.random();
     const jsonStr = JSON.stringify(alphaBetaMap);
-    global.localStorage.setItem('alphaBetaMap', jsonStr);
+    global.localStorage.setItem(localStorageKey, jsonStr);
   }
   return (alphaBetaMap[experimentParams.id] < experimentParams.testCohortSize);
 }
