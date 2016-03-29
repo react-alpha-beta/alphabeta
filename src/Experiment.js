@@ -22,6 +22,50 @@ export function postExperimentData(experimentId, variant, success = null, metaId
   });
 }
 
+function getExperimentDataCallback(json) {
+  const variantATrialCount =  json.variant_a_trial_count;
+  const variantBTrialCount =  json.variant_b_trial_count;
+  const variantASuccessCount =  json.variant_a_success_count;
+  const variantBSuccessCount =  json.variant_b_success_count;
+
+  const probabilityMeanA = variantASuccessCount / variantATrialCount;
+  const probabilityMeanB = variantBSuccessCount / variantBTrialCount;
+  const probabilityVarianceA = variantATrialCount * probabilityMeanA * (1 - probabilityMeanA);
+  const probabilityVarianceB = variantBTrialCount * probabilityMeanB * (1 - probabilityMeanB);
+
+  let confidenceIntervalA;
+  if (variantATrialCount * probabilityMeanA > 5){
+    // safe to use normal distrabution
+    confidenceIntervalA = zScore * probabilityVarianceA;
+  } else {
+    // cannot use normal distrabution, use binomieal dist
+    confidenceIntervalA = zScore * Math.sqrt((probabilityMeanA * (1 - probabilityMeanA)) / variantATrialCount);
+  }
+
+  console.log('probabilityMeanA: ' + confidenceIntervalA);
+  // console.log('probabilityVarianceA: ' + probabilityVarianceA);
+  // console.log('probabilityMeanB: ' + probabilityMeanB);
+  // console.log('probabilityVarianceB: ' + probabilityVarianceB);
+}
+
+export function getExperimentData(experimentId) {
+  let alphaBetaEndpoint = process.env.ALPHA_BETA_ENDPOINT;
+  if (alphaBetaEndpoint === undefined) {
+    alphaBetaEndpoint = SETTINGS.experimentEndPoint;
+  }
+  return fetch(alphaBetaEndpoint + '/' + experimentId + '/', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(response => response.json())
+  .then(json => {
+    getExperimentDataCallback(json);
+  });
+}
+
 // experiments should look something like this
 // {
 //   experimentId: {
