@@ -3,7 +3,6 @@ export function isInCohort(experimentParams) {
   try {
     const jsonStr = global.localStorage.getItem('alphaBetaMap');
     alphaBetaMap = jsonStr && JSON.parse(jsonStr) || {};
-    console.log(jsonStr)
   } catch (err) {
     alphaBetaMap = {};
   }
