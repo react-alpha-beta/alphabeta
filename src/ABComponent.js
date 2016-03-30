@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { isInCohort } from './Cohort';
+import { localStorageKey } from './constants';
 import { postExperimentData } from './Experiment';
 
 class ABComponent extends React.Component {
@@ -34,11 +35,10 @@ class ABComponent extends React.Component {
   }
 
   componentWillMount() {
-    if (isInCohort(this.props.experimentParams) === true) {
-      this.setState({
-        isInCohort: true,
-      });
-    }
+    this.setState({
+      isInCohort: isInCohort(this.props.experimentParams),
+    });
+    global.addEventListener('storage', this.onStorageEvent);
   }
 
   componentDidMount() {
@@ -57,21 +57,33 @@ class ABComponent extends React.Component {
       // components
       this.props.successAction(...args);
     }
+  }
+
+  componentWillUnmount() {
+    global.removeEventListener('storage', this.onStorageEvent);
+  }
+
+  onStorageEvent = (event) => {
+    if (event.key === localStorageKey) {
+      this.setState({
+        isInCohort: isInCohort(this.props.experimentParams),
+      });
+    }
   };
 
   renderElementOrComponent(elemOrComp) {
     const props = {
       successAction: this.successAction,
     };
-    return React.isValidElement(elemOrComp) ?
-        React.cloneElement(elemOrComp, props)
+    return React.isValidElement(elemOrComp)
+        ? React.cloneElement(elemOrComp, props)
         : React.createElement(elemOrComp, props);
   }
 
   render() {
     const { ComponentA, ComponentB } = this.props;
-    return this.state.isInCohort ?
-        this.renderElementOrComponent(ComponentB)
+    return this.state.isInCohort
+        ? this.renderElementOrComponent(ComponentB)
         : this.renderElementOrComponent(ComponentA);
   }
 }

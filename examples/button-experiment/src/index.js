@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import './index.html';
 import './main.css';
 
-import { ABComponent } from '../../../src/index';
+import { ABComponent, DevTools } from '../../../src/index';
 import ButtonA from './components/ButtonA';
 import ButtonB from './components/ButtonB';
 
@@ -34,6 +34,8 @@ class Page extends React.Component {
               ComponentB={<ButtonB text="Alternate Text B" />}
           />
         </div>
+
+        <DevTools />
       </div>
     );
   }

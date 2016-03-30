@@ -272,6 +272,7 @@
       "overrides": {
       }
     }],
+    // http://eslint.org/docs/rules/space-before-blocks
     "space-before-blocks": 2,
     // http://eslint.org/docs/rules/space-before-function-paren
     "space-before-function-paren": [2, "never"],
