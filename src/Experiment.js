@@ -1,4 +1,6 @@
-// import { defaultsettings } from './defaultsettings';
+/*
+
+*/
 import { SETTINGS } from './defaultSettings';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
@@ -8,6 +10,7 @@ export function postExperimentData(experimentId, variant, success = null, metaId
   }
   return fetch(alphaBetaEndpoint + '/' + experimentId + '/', {
     method: 'PATCH',
+    credentials: 'same-origin',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -55,6 +58,7 @@ export function getExperimentData(experimentId) {
   }
   return fetch(alphaBetaEndpoint + '/' + experimentId + '/', {
     method: 'GET',
+    credentials: 'same-origin',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

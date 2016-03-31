@@ -1,3 +1,4 @@
+/* Function to return a Z score for a given confidence interval*/
 export function zScoreByConfidenceInterval(confidenceInterval) {
   let zScore;
   if (confidenceInterval < 0.5000 || confidenceInterval > 0.9998) {

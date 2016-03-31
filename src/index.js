@@ -1,3 +1,5 @@
+/* Export ABComponent and Devtools application function*/
+
 import React from 'react';
 
 import ABComponent from './ABComponent';
