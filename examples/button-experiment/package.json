@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "AlphaBeta button experiment example.",
   "scripts": {
-    "build": "`npm bin`/babel-node ./runWebpack.js",
-    "start": "`npm bin`/babel-node ./runWebpackDevServer.js"
+    "build": "\"`npm bin`\"/babel-node ./runWebpack.js",
+    "start": "\"`npm bin`\"/babel-node ./runWebpackDevServer.js"
   },
   "repository": {
     "type": "git",
