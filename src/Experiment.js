@@ -36,7 +36,7 @@ function getExperimentDataCallback(json) {
   const probabilityVarianceB = variantBTrialCount * probabilityMeanB * (1 - probabilityMeanB);
 
   let confidenceIntervalA;
-  if (variantATrialCount * probabilityMeanA > 5){
+  if (variantATrialCount * probabilityMeanA > 5) {
     // safe to use normal distrabution
     confidenceIntervalA = zScore * probabilityVarianceA;
   } else {
