@@ -4,8 +4,9 @@
   "description": "Simple declarative A/B testing component for React.",
   "scripts": {
     "lint": "\"`npm bin`\"/eslint --ext .js,.jsx .",
-    "test": "\"`npm bin`\"/mocha --require test/hook --recursive test/*.js --reporter spec --ui bdd",
-    "test:watch": "npm test -- --watch"
+    "test": "NODE_ENV=test \"`npm bin`\"/mocha --require ./test/hook --check-leaks --recursive --reporter spec --ui bdd ./test/*.spec.js",
+    "test:watch": "npm run test -- --watch",
+    "test:cov": "NODE_ENV=test \"`npm bin`\"/istanbul cover \"`npm bin`\"/_mocha -- --require ./test/hook --check-leaks --recursive --reporter spec --ui bdd ./test/*.spec.js"
   },
   "keywords": [
     "A/B",
@@ -49,6 +50,7 @@
     "enzyme": "^2.1.0",
     "eslint": "^2.4.0",
     "eslint-plugin-react": "^4.2.3",
+    "istanbul": "1.0.0-alpha.2",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
