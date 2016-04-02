@@ -1,6 +1,5 @@
-/*
+import fetch from 'isomorphic-fetch';
 
-*/
 import { SETTINGS } from './defaultSettings';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
