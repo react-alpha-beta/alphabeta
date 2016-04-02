@@ -4,7 +4,7 @@
   "description": "Simple declarative A/B testing component for React.",
   "scripts": {
     "lint": "\"`npm bin`\"/eslint --ext .js,.jsx .",
-    "test": "\"`npm bin`\"/mocha --compilers js:babel-register --recursive test/*.js --reporter spec --ui bdd",
+    "test": "\"`npm bin`\"/mocha --require test/hook --recursive test/*.js --reporter spec --ui bdd",
     "test:watch": "npm test -- --watch"
   },
   "keywords": [
