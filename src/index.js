@@ -1,4 +1,6 @@
-/* Export ABComponent and Devtools application function*/
+/**
+* Export ABComponent and Devtools application function
+**/
 
 import React from 'react';
 

@@ -1,14 +1,14 @@
-/* Export a function when passed an `experimentParams` dict
- with `id` and `testCohortSize` keys determines if an experiment
- should take the expierment
-
-@params {string} testId: Any valid dict key
-@params {number} testCohortSize - Number between 0-1,
-to indicate fraction of users to test with  cohert test size
-
-*/
 import { localStorageKey } from './constants';
 
+/** Export a function when passed an `experimentParams` dict
+* with `id` and `testCohortSize` keys determines if an experiment
+* should take the expierment
+
+* @params {string} experimentParams.testId: Any valid dict key
+* @params {number} experimentParams.testCohortSize - Number between 0-1,
+* to indicate fraction of users to test with  cohert test size
+*
+**/
 export function isInCohort(experimentParams) {
   /*
   Function stores a global registery of experiments in a dict

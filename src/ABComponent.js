@@ -1,5 +1,6 @@
-/* Core component, passed two React Components (or Elements)
-and displays a given one depending on the experimental context */
+/** Core component, passed two React Components (or Elements)
+* and displays a given one depending on the experimental context
+**/
 
 import React from 'react';
 
