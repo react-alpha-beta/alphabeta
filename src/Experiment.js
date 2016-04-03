@@ -1,13 +1,9 @@
 import fetch from 'isomorphic-fetch';
 
-import { SETTINGS } from './defaultSettings';
+import { endPoint } from './config';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
-  let alphaBetaEndpoint = process.env.ALPHA_BETA_ENDPOINT;
-  if (alphaBetaEndpoint === undefined) {
-    alphaBetaEndpoint = SETTINGS.experimentEndPoint;
-  }
-  return fetch(alphaBetaEndpoint + '/' + experimentId + '/', {
+  return fetch(`${endPoint}/${experimentId}/`, {
     method: 'PATCH',
     credentials: 'same-origin',
     headers: {
@@ -51,11 +47,7 @@ function getExperimentDataCallback(json) {
 }
 
 export function getExperimentData(experimentId) {
-  let alphaBetaEndpoint = process.env.ALPHA_BETA_ENDPOINT;
-  if (alphaBetaEndpoint === undefined) {
-    alphaBetaEndpoint = SETTINGS.experimentEndPoint;
-  }
-  return fetch(alphaBetaEndpoint + '/' + experimentId + '/', {
+  return fetch(`${endPoint}/${experimentId}/`, {
     method: 'GET',
     credentials: 'same-origin',
     headers: {
