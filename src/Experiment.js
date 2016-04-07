@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
 import { endPoint } from './config';
+import {zScoreByConfidenceInterval} from './zTable';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
   return fetch(`${endPoint}/${experimentId}/`, {
@@ -20,7 +21,20 @@ export function postExperimentData(experimentId, variant, success = null, metaId
   });
 }
 
-function getExperimentDataCallback(json) {
+/**
+* Function to return the pooled estimate of the common standard deviation (Sp)
+**/
+function getPooledVariance(trialsA, trialsB, successA, successB) {
+  const successPooled = (successA + successB) / (trialsA + trialsB);
+  return Math.sqrt((successPooled * (1 - successPooled) ) * ((1 / trialsA) + (1 / trialsB)));
+  // const varianceASquared = Math.pow(varianceA, 2);
+  // const varianceBSquared = Math.pow(varianceB, 2);
+  // const numerator = ((trialsA - 1) * varianceASquared) + ((trialsB - 1) * varianceBSquared);
+  // const denominator = (trialsA + trialsB) - 2;
+  // return Math.sqrt(numerator / denominator);
+}
+
+function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   const variantATrialCount =  json.variant_a_trial_count;
   const variantBTrialCount =  json.variant_b_trial_count;
   const variantASuccessCount =  json.variant_a_success_count;
@@ -28,22 +42,35 @@ function getExperimentDataCallback(json) {
 
   const probabilityMeanA = variantASuccessCount / variantATrialCount;
   const probabilityMeanB = variantBSuccessCount / variantBTrialCount;
+  const probabilityMeanDifference = probabilityMeanB - probabilityMeanA;
   const probabilityVarianceA = variantATrialCount * probabilityMeanA * (1 - probabilityMeanA);
   const probabilityVarianceB = variantBTrialCount * probabilityMeanB * (1 - probabilityMeanB);
+  const varianceRatio = probabilityVarianceA / probabilityVarianceB;
+  const probabilityVariancePooled = getPooledVariance(
+    variantATrialCount, variantBTrialCount, variantASuccessCount, variantBSuccessCount
+  );
+  const zScore = zScoreByConfidenceInterval(confidenceInterval);
 
-  let confidenceIntervalA;
-  if (variantATrialCount * probabilityMeanA > 5) {
-    // safe to use normal distrabution
-    confidenceIntervalA = zScore * probabilityVarianceA;
+  if (varianceRatio > 0.5 && varianceRatio < 2) {
+    // heuristic: when one variance is no more than double the other, we can use the
+    // pooled estimate of the common standard deviation.
+    const marginOfError = zScore * probabilityVariancePooled * math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
+    const differenceFloor = probabilityMeanDifference - marginOfError;
+    const differenceCeiling = probabilityMeanDifference + marginOfError;
+
+    if ((differenceFloor > 0) === (differenceCeiling > 0)) {
+      const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
+      // there is a statistically significant difference between these two variants
+      console.log('We are ' + confidenceIntervalAsPercentage + '% certain that one variant is better.');
+    } else {
+      // there is no statistically significant difference between these two variants
+      console.log('We cannot say with ' + confidenceIntervalAsPercentage + '% certainty that one variant is better.');
+    }
   } else {
-    // cannot use normal distrabution, use binomieal dist
-    confidenceIntervalA = zScore * Math.sqrt((probabilityMeanA * (1 - probabilityMeanA)) / variantATrialCount);
+    // TODO: we must account for the heterogeneity in variances
+    const error = new Error('Your varianceRatio is not between 0.5 and 2');
+    throw error;
   }
-
-  console.log('probabilityMeanA: ' + confidenceIntervalA);
-  // console.log('probabilityVarianceA: ' + probabilityVarianceA);
-  // console.log('probabilityMeanB: ' + probabilityMeanB);
-  // console.log('probabilityVarianceB: ' + probabilityVarianceB);
 }
 
 export function getExperimentData(experimentId) {
