@@ -5,6 +5,8 @@ import {zScoreByConfidenceInterval} from './zTable';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
   return fetch(`${endPoint}/${experimentId}/`, {
+  // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
+
     method: 'PATCH',
     credentials: 'same-origin',
     headers: {
@@ -54,12 +56,15 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   if (varianceRatio > 0.5 && varianceRatio < 2) {
     // heuristic: when one variance is no more than double the other, we can use the
     // pooled estimate of the common standard deviation.
-    const marginOfError = zScore * probabilityVariancePooled * math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
+    const marginOfError = zScore * probabilityVariancePooled * Math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
     const differenceFloor = probabilityMeanDifference - marginOfError;
     const differenceCeiling = probabilityMeanDifference + marginOfError;
+    const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
+
+    console.log('differenceFloor: ' + differenceFloor);
+    console.log('differenceCeiling: ' + differenceCeiling);
 
     if ((differenceFloor > 0) === (differenceCeiling > 0)) {
-      const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
       // there is a statistically significant difference between these two variants
       console.log('We are ' + confidenceIntervalAsPercentage + '% certain that one variant is better.');
     } else {
@@ -75,6 +80,7 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
 
 export function getExperimentData(experimentId) {
   return fetch(`${endPoint}/${experimentId}/`, {
+  // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
     method: 'GET',
     credentials: 'same-origin',
     headers: {

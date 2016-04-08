@@ -7,6 +7,7 @@ import React from 'react';
 import { isInCohort } from './Cohort';
 import { localStorageKey } from './constants';
 import { postExperimentData } from './Experiment';
+// import { getExperimentData } from './Experiment';
 
 class ABComponent extends React.Component {
   static displayName = 'ABComponent';
@@ -78,7 +79,7 @@ class ABComponent extends React.Component {
 
     const experimentId = this.props.experimentParams.id;
     postExperimentData(experimentId, variant, true);
-    if (typeof this.props.successAction !== undefined) {
+    if (typeof this.props.successAction !== 'undefined') {
       // fire the successAction event only if it was passed down to the variant
       // components
       this.props.successAction(...args);
@@ -110,6 +111,8 @@ class ABComponent extends React.Component {
 
   render() {
     /* Render A/B depending ong the  */
+
+    // getExperimentData(1);
     const { ComponentA, ComponentB } = this.props;
     return this.state.isInCohort
         ? this.renderElementOrComponent(ComponentB)

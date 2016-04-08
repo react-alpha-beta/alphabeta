@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { localStorageKey } from '../constants';
-import style from './style.module.css';
 
 class DevTools extends React.Component {
   static displayName = 'DevTools';
@@ -38,7 +37,7 @@ class DevTools extends React.Component {
 
   renderExperiment(id, value) {
     return (
-      <div className={style.experiment}>
+      <div style={{display: 'flex'}}>
         <label>{id}</label>
         <input type="range" min="0" max="1" step="0.01" name={id} value={value} onChange={this.onChange} />
       </div>
@@ -48,7 +47,13 @@ class DevTools extends React.Component {
   render() {
     const { alphaBetaMap } = this.state;
     return (
-      <div className={style.devtools}>
+      <div style={{position: 'fixed',
+                   bottom: 0,
+                   right: 0,
+                   margin: '1em',
+                   padding: '1em',
+                   background: '#eee',
+                   border: '2px solid #777'}}>
         {Object.keys(alphaBetaMap).map(id => this.renderExperiment(id, alphaBetaMap[id]))}
         <div>
           {JSON.stringify(this.alphaBetaMap, null, 2)}
