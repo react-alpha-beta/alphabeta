@@ -46,14 +46,14 @@ ReactDOM.render(
 );
 ```
 
-The AlphaBeta component passes the prop "successAction" to ComponentA and ComponentB (your two variants). "successAction" is a function that should be called when the the event you're measuring occurs. In this experiment your variants are buttons, so the onClick event is probably our successAction. Make sure that your code fires successAction when an onClick event occurs in ButtonA or ButtonB.
+The AlphaBeta component passes the prop "successAction" to ComponentA and ComponentB (your two variants). "successAction" is a function that should be called when the the event you're measuring occurs. In this experiment your two variants are buttons, so the "onClick" event is probably our successAction. Make sure that your code fires successAction when an onClick event occurs in ButtonA or ButtonB.
 
 ### Installation
 ```bash
 $ npm install react-alphabeta --save
 ```
 
-### Setup
+### Backend / API Setup
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This need to be linked with a datastore isn't unique to AlphaBeta - it is true of split testing in general.
 
 Imagine that you're running an experiment to see if changing your "Sign Up" button from blue to orange leads to more sign ups. To measure which color performs better, you need to keep track of the number of times each buton is seen (impressions) and the number of times each button is clicked (success events or conversions).
@@ -142,6 +142,6 @@ $ npm run test:watch  # continuous testing as file changes
 * [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
 
 ### License
-MIT
+[MIT](LICENSE)
 
 ### Credits
