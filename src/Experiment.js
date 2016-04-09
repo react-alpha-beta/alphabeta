@@ -1,10 +1,10 @@
 import fetch from 'isomorphic-fetch';
 
-import { endPoint } from './config';
-import {zScoreByConfidenceInterval} from './zTable';
+import config from './config';
+import { zScoreByConfidenceInterval } from './zTable';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
-  return fetch(`${endPoint}/${experimentId}/`, {
+  return fetch(`${config.endPoint}/${experimentId}/`, {
   // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
 
     method: 'PATCH',
@@ -24,8 +24,8 @@ export function postExperimentData(experimentId, variant, success = null, metaId
 }
 
 /**
-* Function to return the pooled estimate of the common standard deviation (Sp)
-**/
+ * Function to return the pooled estimate of the common standard deviation (Sp).
+ */
 function getPooledVariance(trialsA, trialsB, successA, successB) {
   const successPooled = (successA + successB) / (trialsA + trialsB);
   return Math.sqrt((successPooled * (1 - successPooled) ) * ((1 / trialsA) + (1 / trialsB)));
@@ -79,7 +79,7 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
 }
 
 export function getExperimentData(experimentId) {
-  return fetch(`${endPoint}/${experimentId}/`, {
+  return fetch(`${config.endPoint}/${experimentId}/`, {
   // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
     method: 'GET',
     credentials: 'same-origin',
