@@ -142,6 +142,6 @@ $ npm run test:watch  # continuous testing as file changes
 * [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
 
 ### License
-[MIT](LICENSE)
+[MIT](LICENSE.md)
 
 ### Credits
