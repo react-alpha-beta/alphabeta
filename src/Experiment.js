@@ -29,11 +29,16 @@ export function postExperimentData(experimentId, variant, success = null, metaId
 function getPooledVariance(trialsA, trialsB, successA, successB) {
   const successPooled = (successA + successB) / (trialsA + trialsB);
   return Math.sqrt((successPooled * (1 - successPooled) ) * ((1 / trialsA) + (1 / trialsB)));
-  // const varianceASquared = Math.pow(varianceA, 2);
-  // const varianceBSquared = Math.pow(varianceB, 2);
-  // const numerator = ((trialsA - 1) * varianceASquared) + ((trialsB - 1) * varianceBSquared);
-  // const denominator = (trialsA + trialsB) - 2;
-  // return Math.sqrt(numerator / denominator);
+}
+
+function assumeNormalDistrabution(trials, probabilityMean) {
+  // heuristic: when the # of trials * the mean probability of success is > 5,
+  // it's safe to assume the normal distrabution can be used (instead of the
+  // binomieal distrabution)
+  if (trials * probabilityMean > 5) {
+    return true;
+  }
+  return false;
 }
 
 function getExperimentDataCallback(json, confidenceInterval = 0.95) {
@@ -53,28 +58,37 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   );
   const zScore = zScoreByConfidenceInterval(confidenceInterval);
 
-  if (varianceRatio > 0.5 && varianceRatio < 2) {
-    // heuristic: when one variance is no more than double the other, we can use the
+  const assumeNormalDistrabutionA = assumeNormalDistrabution(variantATrialCount, probabilityMeanA);
+  const assumeNormalDistrabutionB = assumeNormalDistrabution(variantBTrialCount, probabilityMeanB);
+
+  const marginOfError = zScore * probabilityVariancePooled * Math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
+  const differenceFloor = probabilityMeanDifference - marginOfError;
+  const differenceCeiling = probabilityMeanDifference + marginOfError;
+  const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
+
+  if (assumeNormalDistrabutionA === false || assumeNormalDistrabutionB === false) {
+    const error = new Error('You do not have enough sample data for one or both of your variants to make an assertion');
+    throw error;
+  }
+
+  if (varianceRatio <= 0.5 || varianceRatio >= 2) {
+    // heuristic: when one variance is more than double the other, we cannot use the
     // pooled estimate of the common standard deviation.
-    const marginOfError = zScore * probabilityVariancePooled * Math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
-    const differenceFloor = probabilityMeanDifference - marginOfError;
-    const differenceCeiling = probabilityMeanDifference + marginOfError;
-    const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
 
-    console.log('differenceFloor: ' + differenceFloor);
-    console.log('differenceCeiling: ' + differenceCeiling);
-
-    if ((differenceFloor > 0) === (differenceCeiling > 0)) {
-      // there is a statistically significant difference between these two variants
-      console.log('We are ' + confidenceIntervalAsPercentage + '% certain that one variant is better.');
-    } else {
-      // there is no statistically significant difference between these two variants
-      console.log('We cannot say with ' + confidenceIntervalAsPercentage + '% certainty that one variant is better.');
-    }
-  } else {
     // TODO: we must account for the heterogeneity in variances
     const error = new Error('Your varianceRatio is not between 0.5 and 2');
     throw error;
+  }
+
+  console.log('differenceFloor: ' + differenceFloor);
+  console.log('differenceCeiling: ' + differenceCeiling);
+
+  if ((differenceFloor > 0) === (differenceCeiling > 0)) {
+    // there is a statistically significant difference between these two variants
+    console.log('We are ' + confidenceIntervalAsPercentage + '% certain that one variant is better.');
+  } else {
+    // there is no statistically significant difference between these two variants
+    console.log('We cannot say with ' + confidenceIntervalAsPercentage + '% certainty that one variant is better.');
   }
 }
 
