@@ -37,7 +37,7 @@ export function getPooledStandardDeviation(trialsA, trialsB, successA, successB)
 
 export function getUnpooledVariance(trialsA, trialsB, varianceA, varianceB) {
   return Math.sqrt(
-    (Math.pow(varianceA, 2) / trialsA) + (Math.pow(varianceB, 2) / trialsB)
+    (varianceA / trialsA) + (varianceB / trialsB)
   );
 }
 
