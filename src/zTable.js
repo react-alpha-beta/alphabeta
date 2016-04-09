@@ -316,10 +316,10 @@ export function zScoreByConfidenceInterval(confidenceInterval, twoTailed = true)
 
   if (tailedConfidenceInterval < 0.5000 || tailedConfidenceInterval > 0.9998) {
     if (twoTailed === true) {
-      const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9998');
+      const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9996');
       throw error;
     } else {
-      const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9996');
+      const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9998');
       throw error;
     }
   }
