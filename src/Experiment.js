@@ -100,8 +100,10 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   // const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
 
   if (assumeNormalDistrabutionA === false || assumeNormalDistrabutionB === false) {
-    const error = new Error('You do not have enough sample data for one or both of your variants to make an assertion');
-    throw error;
+    return {
+      statisticalSignificance: false,
+      details: 'You do not have enough sample data for one or both of your variants to make any assertions.',
+    };
   }
 
   if (varianceRatio <= 0.5 || varianceRatio >= 2) {
@@ -109,8 +111,10 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
     // pooled estimate of the common standard deviation.
 
     // TODO: we must account for the heterogeneity in variances
-    const error = new Error('Your varianceRatio is not between 0.5 and 2');
-    throw error;
+    return {
+      statisticalSignificance: false,
+      details: 'Your varianceRatio is not between 0.5 and 2 in order to make an assertion.',
+    };
   }
 
   let statisticalSignificance;
