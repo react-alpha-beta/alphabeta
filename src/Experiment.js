@@ -70,10 +70,6 @@ function testDetails(probabilityMeanDifference, marginOfError, confidenceInterva
   return details + ' (' + range + '). ' + recommendation;
 }
 
-  // let description = "Our best guess is that the absolute rate of success is xxx LOWER|HIGHER for variant B as compared to variant A."
-  // description = description + "This result IS|IS NOT statistically significant to CI confidence (we are CI confident that the true difference in rate of success is between FLOOR and CEILING."
-
-
 function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   const variantATrialCount =  json.variant_a_trial_count;
   const variantBTrialCount =  json.variant_b_trial_count;
