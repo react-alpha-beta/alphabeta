@@ -308,11 +308,21 @@ const zTable = [
 /**
  * Function to return a Z-score for a given confidence interval.
  */
-export function zScoreByConfidenceInterval(confidenceInterval) {
+export function zScoreByConfidenceInterval(confidenceInterval, twoTailed = true) {
   let zScore = 0.00;
-  if (confidenceInterval < 0.5000 || confidenceInterval > 0.9998) {
-    const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9998');
-    throw error;
+  if (twoTailed === true) {
+    tailedConfidenceInterval = 1 - ((1 - confidenceInterval) / 2);
+  }
+
+
+  if (tailedConfidenceInterval < 0.5000 || tailedConfidenceInterval > 0.9998) {
+    if (twoTailed === true) {
+      const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9998');
+      throw error;
+    } else {
+      const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9996');
+      throw error;
+    }
   }
   for (let i = 0; i < zTable.length; i++) {
     if (confidenceInterval > zTable[i][0]) {
