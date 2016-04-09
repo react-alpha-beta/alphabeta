@@ -31,14 +31,17 @@ function getPooledVariance(trialsA, trialsB, successA, successB) {
   return Math.sqrt((successPooled * (1 - successPooled) ) * ((1 / trialsA) + (1 / trialsB)));
 }
 
+function getUnpooledVariance(trialsA, trialsB, varianceA, varianceB) {
+  return Math.sqrt(
+    (Math.pow(varianceA, 2) / trialsA) + (Math.pow(varianceB, 2) / trialsB)
+  );
+}
+
 function assumeNormalDistrabution(trials, probabilityMean) {
   // heuristic: when the # of trials * the mean probability of success is > 5,
   // it's safe to assume the normal distrabution can be used (instead of the
   // binomieal distrabution)
-  if (trials * probabilityMean > 5) {
-    return true;
-  }
-  return false;
+  return (trials * probabilityMean > 5);
 }
 
 function testDetails(probabilityMeanDifference, marginOfError, confidenceInterval) {
@@ -85,15 +88,13 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   const probabilityVariancePooled = getPooledVariance(
     variantATrialCount, variantBTrialCount, variantASuccessCount, variantBSuccessCount
   );
+  const probabilityVarianceUnpooled = getUnpooledVariance(
+    variantATrialCount, variantBTrialCount, probabilityVarianceA, probabilityVarianceB
+  );
   const zScore = zScoreByConfidenceInterval(confidenceInterval);
 
   const assumeNormalDistrabutionA = assumeNormalDistrabution(variantATrialCount, probabilityMeanA);
   const assumeNormalDistrabutionB = assumeNormalDistrabution(variantBTrialCount, probabilityMeanB);
-
-  const marginOfError = zScore * probabilityVariancePooled * Math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
-  const differenceFloor = probabilityMeanDifference - marginOfError;
-  const differenceCeiling = probabilityMeanDifference + marginOfError;
-  // const confidenceIntervalAsPercentage = Math.round(confidenceInterval * 100, -2);
 
   if (assumeNormalDistrabutionA === false || assumeNormalDistrabutionB === false) {
     return {
@@ -102,16 +103,17 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
     };
   }
 
+  let marginOfError;
   if (varianceRatio <= 0.5 || varianceRatio >= 2) {
     // heuristic: when one variance is more than double the other, we cannot use the
     // pooled estimate of the common standard deviation.
-
-    // TODO: we must account for the heterogeneity in variances
-    return {
-      statisticalSignificance: false,
-      details: 'Your varianceRatio is not between 0.5 and 2 in order to make an assertion.',
-    };
+    marginOfError = zScore * probabilityVarianceUnpooled * Math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
+  } else {
+    marginOfError = zScore * probabilityVariancePooled * Math.sqrt((1 / variantATrialCount) + (1 / variantBTrialCount));
   }
+
+  const differenceFloor = probabilityMeanDifference - marginOfError;
+  const differenceCeiling = probabilityMeanDifference + marginOfError;
 
   let statisticalSignificance;
   if (differenceFloor * differenceCeiling > 0) {
