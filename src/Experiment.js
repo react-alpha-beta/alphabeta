@@ -23,21 +23,25 @@ export function postExperimentData(experimentId, variant, success = null, metaId
   });
 }
 
+export function getPooledVariance(trialsA, trialsB, successA, successB) {
+  const successPooled = (successA + successB) / (trialsA + trialsB);
+  return (successPooled * (1 - successPooled)) * ((1 / trialsA) + (1 / trialsB));
+}
+
 /**
  * Function to return the pooled estimate of the common standard deviation (Sp).
  */
-function getPooledVariance(trialsA, trialsB, successA, successB) {
-  const successPooled = (successA + successB) / (trialsA + trialsB);
-  return Math.sqrt((successPooled * (1 - successPooled) ) * ((1 / trialsA) + (1 / trialsB)));
+export function getPooledStandardDeviation(trialsA, trialsB, successA, successB) {
+  return Math.sqrt(getPooledVariance(trialsA, trialsB, successA, successB));
 }
 
-function getUnpooledVariance(trialsA, trialsB, varianceA, varianceB) {
+export function getUnpooledVariance(trialsA, trialsB, varianceA, varianceB) {
   return Math.sqrt(
     (Math.pow(varianceA, 2) / trialsA) + (Math.pow(varianceB, 2) / trialsB)
   );
 }
 
-function assumeNormalDistrabution(trials, probabilityMean) {
+export function assumeNormalDistribution(trials, probabilityMean) {
   // heuristic: when the # of trials * the mean probability of success is > 5,
   // it's safe to assume the normal distrabution can be used (instead of the
   // binomieal distrabution)
@@ -73,11 +77,13 @@ function testDetails(probabilityMeanDifference, marginOfError, confidenceInterva
   return details + ' (' + range + '). ' + recommendation;
 }
 
-function getExperimentDataCallback(json, confidenceInterval = 0.95) {
-  const variantATrialCount =  json.variant_a_trial_count;
-  const variantBTrialCount =  json.variant_b_trial_count;
-  const variantASuccessCount =  json.variant_a_success_count;
-  const variantBSuccessCount =  json.variant_b_success_count;
+// let description = "Our best guess is that the absolute rate of success is xxx LOWER|HIGHER for variant B as compared to variant A."
+// description = description + "This result IS|IS NOT statistically significant to CI confidence (we are CI confident that the true difference in rate of success is between FLOOR and CEILING."
+export function computeStats(json, confidenceInterval = 0.95) {
+  const variantATrialCount = json.variant_a_trial_count;
+  const variantBTrialCount = json.variant_b_trial_count;
+  const variantASuccessCount = json.variant_a_success_count;
+  const variantBSuccessCount = json.variant_b_success_count;
 
   const probabilityMeanA = variantASuccessCount / variantATrialCount;
   const probabilityMeanB = variantBSuccessCount / variantBTrialCount;
@@ -85,18 +91,21 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   const probabilityVarianceA = variantATrialCount * probabilityMeanA * (1 - probabilityMeanA);
   const probabilityVarianceB = variantBTrialCount * probabilityMeanB * (1 - probabilityMeanB);
   const varianceRatio = probabilityVarianceA / probabilityVarianceB;
-  const probabilityVariancePooled = getPooledVariance(
-    variantATrialCount, variantBTrialCount, variantASuccessCount, variantBSuccessCount
+  const probabilityVariancePooled = getPooledStandardDeviation(
+    variantATrialCount,
+    variantBTrialCount,
+    variantASuccessCount,
+    variantBSuccessCount
   );
   const probabilityVarianceUnpooled = getUnpooledVariance(
     variantATrialCount, variantBTrialCount, probabilityVarianceA, probabilityVarianceB
   );
   const zScore = zScoreByConfidenceInterval(confidenceInterval);
 
-  const assumeNormalDistrabutionA = assumeNormalDistrabution(variantATrialCount, probabilityMeanA);
-  const assumeNormalDistrabutionB = assumeNormalDistrabution(variantBTrialCount, probabilityMeanB);
+  const assumeNormalDistributionA = assumeNormalDistribution(variantATrialCount, probabilityMeanA);
+  const assumeNormalDistributionB = assumeNormalDistribution(variantBTrialCount, probabilityMeanB);
 
-  if (assumeNormalDistrabutionA === false || assumeNormalDistrabutionB === false) {
+  if (assumeNormalDistributionA === false || assumeNormalDistributionB === false) {
     return {
       statisticalSignificance: false,
       details: 'You do not have enough sample data for one or both of your variants to make any assertions.',
@@ -115,12 +124,7 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   const differenceFloor = probabilityMeanDifference - marginOfError;
   const differenceCeiling = probabilityMeanDifference + marginOfError;
 
-  let statisticalSignificance;
-  if (differenceFloor * differenceCeiling > 0) {
-    statisticalSignificance = true;
-  } else {
-    statisticalSignificance = false;
-  }
+  const statisticalSignificance = (differenceFloor * differenceCeiling > 0);
 
   return {
     statisticalSignificance: statisticalSignificance,
@@ -142,7 +146,7 @@ export function getExperimentData(experimentId) {
   })
   .then(response => response.json())
   .then(json => {
-    getExperimentDataCallback(json);
+    computeStats(json);
   });
 }
 
