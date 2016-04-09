@@ -123,15 +123,16 @@ export function computeStats(json, confidenceInterval = 0.95) {
 
   const differenceFloor = probabilityMeanDifference - marginOfError;
   const differenceCeiling = probabilityMeanDifference + marginOfError;
-
   const statisticalSignificance = (differenceFloor * differenceCeiling > 0);
 
-  return {
+  const result = {
     statisticalSignificance: statisticalSignificance,
     meanDifferenceValue: probabilityMeanDifference,
     marginOfError: marginOfError,
     details: testDetails(probabilityMeanDifference, marginOfError, confidenceInterval),
   };
+  // console.log(result);
+  return result;
 }
 
 export function getExperimentData(experimentId) {
