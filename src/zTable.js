@@ -1,5 +1,5 @@
 const zTable = [
-  // [confidence interval, zScore]
+  // [area left of z, z]
   [0.9997, 3.49],
   [0.9996, 3.39],
   [0.9995, 3.33],
@@ -310,9 +310,9 @@ const zTable = [
  */
 export function zScoreByConfidenceInterval(confidenceInterval, twoTailed = true) {
   let zScore = 0.00;
-  if (twoTailed === true) {
-    tailedConfidenceInterval = 1 - ((1 - confidenceInterval) / 2);
-  }
+  const tailedConfidenceInterval = twoTailed
+      ? 1 - ((1 - confidenceInterval) / 2)
+      : confidenceInterval;
 
   if (tailedConfidenceInterval < 0.5000 || tailedConfidenceInterval > 0.9998) {
     if (twoTailed === true) {
@@ -325,8 +325,9 @@ export function zScoreByConfidenceInterval(confidenceInterval, twoTailed = true)
   }
 
   for (let i = 0; i < zTable.length; i++) {
-    if (confidenceInterval > zTable[i][0]) {
+    if (tailedConfidenceInterval > zTable[i][0]) {
       zScore = zTable[i][1];
+      break;
     }
   }
   return zScore;
