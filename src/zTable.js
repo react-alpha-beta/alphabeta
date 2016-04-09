@@ -314,7 +314,6 @@ export function zScoreByConfidenceInterval(confidenceInterval, twoTailed = true)
     tailedConfidenceInterval = 1 - ((1 - confidenceInterval) / 2);
   }
 
-
   if (tailedConfidenceInterval < 0.5000 || tailedConfidenceInterval > 0.9998) {
     if (twoTailed === true) {
       const error = new Error('Your confidenceInterval must be between 0.5000 and 0.9998');
@@ -324,6 +323,7 @@ export function zScoreByConfidenceInterval(confidenceInterval, twoTailed = true)
       throw error;
     }
   }
+
   for (let i = 0; i < zTable.length; i++) {
     if (confidenceInterval > zTable[i][0]) {
       zScore = zTable[i][1];
