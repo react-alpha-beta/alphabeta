@@ -83,11 +83,9 @@ function getExperimentDataCallback(json, confidenceInterval = 0.95) {
   console.log('differenceFloor: ' + differenceFloor);
   console.log('differenceCeiling: ' + differenceCeiling);
 
-  if ((differenceFloor > 0) === (differenceCeiling > 0)) {
-    // there is a statistically significant difference between these two variants
+  if (differenceFloor * differenceCeiling > 0) {
     console.log('We are ' + confidenceIntervalAsPercentage + '% certain that one variant is better.');
   } else {
-    // there is no statistically significant difference between these two variants
     console.log('We cannot say with ' + confidenceIntervalAsPercentage + '% certainty that one variant is better.');
   }
 }
