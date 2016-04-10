@@ -17,7 +17,7 @@ import { ABComponent } from 'react-alphabeta';
 class ButtonA extends React.Component {
   render(){
     return (<Button onClick={this.props.successEvent} >
-              Button A
+              "Button Example A"
             </Button>)
   }
 }
@@ -25,18 +25,13 @@ class ButtonA extends React.Component {
 class ButtonB extends React.Component {
   render(){
     return (<Button onClick={this.props.successEvent} >
-              Button B
+              "Button Example B"
             </Button>)
   }
 }
 
 
 class Page extends React.Component {
-    
-    buttonClickedEvent = () => {
-        console.info("Button clicked")
-    };
-
     render() {
         return (
             <div>
