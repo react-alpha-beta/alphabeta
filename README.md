@@ -16,7 +16,8 @@ import { ABComponent } from 'react-alphabeta';
 
 class ButtonA extends React.Component {
   render() {
-    return (<Button onClick={this.props.successEvent} style={{'background-color':'blue'}}/>
+    return (<Button onClick={this.props.successEvent} 
+                    style={{'background-color':'blue'}}/>
               "Sign Up"
             </Button>);
   }
@@ -24,7 +25,8 @@ class ButtonA extends React.Component {
 
 class ButtonB extends React.Component {
   render() {
-    return (<Button onClick={this.props.successEvent} style={{'background-color':'orange'}}/>
+    return (<Button onClick={this.props.successEvent} 
+                    style={{'background-color':'orange'}}/>
               "Sign Up"
             </Button>);
   }
@@ -91,7 +93,7 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
 
   * **variant** tells your datastore which component variant (A or B) was presented to a particular user.
 
-  * **success** tells your datastore whether the success event occured (true) not (null).
+  * **success** tells your datastore whether the success event occured (`true`) not (`null`).
 
   (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When **success** is passed as `null`, that signals that an sample event has occured (a user saw one variant - A or B - of the thing that you're testing). It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as `true`, that signals that a success event has occured.)
   
@@ -163,3 +165,4 @@ $ npm run test:watch  # continuous testing as file changes
 [MIT](LICENSE.md)
 
 ### Credits
+[jackmccloy](@jackmccloy)
