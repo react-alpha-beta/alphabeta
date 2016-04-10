@@ -5,8 +5,6 @@ import { zScoreByConfidenceInterval } from './zTable';
 
 export function postExperimentData(experimentId, variant, success = null, metaId = null) {
   return fetch(`${config.endPoint}/${experimentId}/`, {
-  // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
-
     method: 'POST',
     credentials: 'same-origin',
     headers: {
@@ -77,8 +75,6 @@ function testDetails(probabilityMeanDifference, marginOfError, confidenceInterva
   return details + ' (' + range + '). ' + recommendation;
 }
 
-// let description = "Our best guess is that the absolute rate of success is xxx LOWER|HIGHER for variant B as compared to variant A."
-// description = description + "This result IS|IS NOT statistically significant to CI confidence (we are CI confident that the true difference in rate of success is between FLOOR and CEILING."
 export function computeStats(json) {
   const variantATrialCount = json.variantA.trialCount;
   const variantBTrialCount = json.variantB.trialCount;
@@ -132,13 +128,11 @@ export function computeStats(json) {
     marginOfError: marginOfError,
     details: testDetails(probabilityMeanDifference, marginOfError, confidenceInterval),
   };
-  // console.log(result);
   return result;
 }
 
 export function getExperimentData(experimentId) {
   return fetch(`${config.endPoint}/${experimentId}/`, {
-  // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
     method: 'GET',
     credentials: 'same-origin',
     headers: {
@@ -151,25 +145,3 @@ export function getExperimentData(experimentId) {
     computeStats(json);
   });
 }
-
-// experiments should look something like this
-// {
-//   experimentId: {
-//     ditrabutionType: "normal",
-//     testCohortSize: "10%",
-//     successThreshold: "95%" (default=null),
-//     experimentStartTime: (default= now),
-//     experimentEndTime: (default= never, ie once successThreshold is met),
-//     // a: {
-//     //   mean: ?,
-//     //   confidenceInterval: 93%,
-//     // },
-//     // b: {
-//     //   mean: ?,
-//     //   confidenceInterval: 93%,
-//     // },
-//     // comparison: {
-//     //   winnter: "94% certain A is between better",
-//     // }
-//   }
-// }
