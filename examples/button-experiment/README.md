@@ -15,7 +15,7 @@ If everything is working correctly, you should see two buttons on a coral-colore
 
 ### So what am I looking at?
 
-*Passing your variants to AlphaBeta*
+**Passing your variants to AlphaBeta**
 
 Each button represents a test - _Test 1_ and _Test 2_. Take a moment to look at how these tests are defined in [examples/button-experiment/src/index.js](examples/button-experiment/src/index.js). They're pretty similar, but there are a few important differences. 
 
@@ -23,5 +23,5 @@ In _Test 1_, the two variant component (variants) are passed to the AlphaBeta co
 
 So when should you use the _Test 1_ pattern and when should you use the _Test 2_ pattern? If you are passing props from your parent component down to your variants - or if what you're testing is a prop, as is the case in _Test 2_ here, you'll need to follow the pattern _Test 2_ uses. Otherwise, either patter will work equally well.
 
-*Setting up your experiment using experimentParams*
+**Setting up your experiment using experimentParams**
 TODO
