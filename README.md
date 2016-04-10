@@ -14,7 +14,10 @@ AlphaBeta is...
 ```js
 import { ABComponent } from 'react-alphabeta';
 import { ButtonA, ButtonB } from '../yourCode';
-
+class ButtonA extends React.Component {
+  render(){
+  }
+}
 
 class Page extends React.Component {
     
@@ -25,7 +28,6 @@ class Page extends React.Component {
     render() {
         return (
             <div>
-
                 <ABComponent
                     ComponentA={ButtonA}
                     ComponentB={ButtonB}
@@ -34,7 +36,6 @@ class Page extends React.Component {
                       testCohortSize: 0.4,
                     }}
                 />
-
             </div>
         );
     }
@@ -46,7 +47,7 @@ ReactDOM.render(
 );
 ```
 
-The AlphaBeta component passes the prop "successAction" to ComponentA and ComponentB (your two variants). "successAction" is a function that should be called when the the event you're measuring occurs. In this experiment your two variants are buttons, so the "onClick" event is probably our successAction. Make sure that your code fires successAction when an onClick event occurs in ButtonA or ButtonB.
+Additonally, the AlphaBeta component passes the prop `successAction` to ComponentA and ComponentB (your two variants). `successAction` is a function that should be called when the the event you're measuring occurs. In this experiment your two variants are buttons, so the "onClick" event is probably our `successAction`. Make sure that your code fires successAction when an onClick event occurs in ButtonA or ButtonB.
 
 ### Installation
 ```bash
