@@ -30,8 +30,8 @@ class Page extends React.Component {
                 id: '2',
                 testCohortSize: 0.4,
               }}
-              ComponentA={<ButtonA text="Alternate Text A" />}
-              ComponentB={<ButtonB text="Alternate Text B" />}
+              ComponentA={<ButtonA text="Text Variant 1" />}
+              ComponentB={<ButtonA text="Text Variant 2" />}
           />
         </div>
 
