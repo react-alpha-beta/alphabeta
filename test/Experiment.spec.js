@@ -37,7 +37,8 @@ describe('Experiment', () => {
           trialCount: 200,
           successCount: 50,
         },
-      }, 0.95);
+        confidenceInterval: 0.95,
+      });
       delete stats.details;
       expect(stats).to.eql({
         statisticalSignificance: false,
@@ -54,7 +55,8 @@ describe('Experiment', () => {
           trialCount: 200,
           successCount: 20,
         },
-      }, 0.95);
+        confidenceInterval: 0.95,
+      });
       delete stats.details;
       expect(stats).to.eql({
         statisticalSignificance: false,
@@ -73,7 +75,8 @@ describe('Experiment', () => {
           trialCount: 1000,
           successCount: 110,
         },
-      }, 0.95);
+        confidenceInterval: 0.95,
+      });
       delete stats.details;
       expect(stats).to.eql({
         statisticalSignificance: true,
@@ -92,7 +95,8 @@ describe('Experiment', () => {
           trialCount: 2000,
           successCount: 400,
         },
-      }, 0.95);
+        confidenceInterval: 0.95,
+      });
       delete stats.details;
       expect(stats).to.eql({
         statisticalSignificance: true,
