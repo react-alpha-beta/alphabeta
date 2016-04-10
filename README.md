@@ -16,16 +16,16 @@ import { ABComponent } from 'react-alphabeta';
 
 class ButtonA extends React.Component {
   render() {
-    return (<Button onClick={this.props.successEvent} >
-              "Button Example A"
+    return (<Button onClick={this.props.successEvent} style={{'background-color':'blue'}}/>
+              "Sign Up"
             </Button>);
   }
 }
 
 class ButtonB extends React.Component {
   render() {
-    return (<Button onClick={this.props.successEvent} >
-              "Button Example B"
+    return (<Button onClick={this.props.successEvent} style={{'background-color':'orange'}}/>
+              "Sign Up"
             </Button>);
   }
 }
@@ -64,19 +64,19 @@ $ npm install react-alphabeta --save
 ### Backend / API Setup
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This need to be linked with a datastore isn't unique to AlphaBeta - it is true of split testing in general.
 
-Imagine that you're running an experiment to see if changing your "Sign Up" button from blue to orange leads to more sign ups. To measure which color performs better, you need to keep track of the number of times each button is seen (impressions) and the number of times each button is clicked (success events or conversions).
+Imagine that you're running an experiment to see if changing your "Sign Up" button from blue (button A) to orange (button B) leads to more sign ups. To measure which color performs better, you need to keep track of the number of times each button is seen (refered to as impressions) and the number of times each button is clicked (success events or conversions).
 
-Given these four values (impressions for button A, conversions for button A, impressions for button B, and conversions for button B), all it takes is a bit of math to estimate (within a range or "confidence interval") which button has a better conversion rate. AlphaBeta does this math for you, but you're responsible for logging the events themselves in your datastore.
+Given these four values (impressions for `button A`, conversions for `button A`, impressions for `button B`, and conversions for `button B`), all it takes is a bit of math to estimate (within a range or "confidence interval") which button has a better conversion rate. AlphaBeta does this math for you, but you're responsible for logging the events themselves in your datastore.
 
 You can connect AlphaBeta to a datastore you're already using in three steps.
 
-  **Step 1:** Build an endpoint for AlphaBeta to POST data to and GET data from.
+  **Step 1:** Build an endpoint to record and retrieve data from AlphaBeta
+  
+  If the hostname/stem of your endpoint is located at `www.yoursite.com/api/alphabeta/`, as users interacting with your your experiments a POST request (with a JSON blob) is sent to `www.yoursite.com/api/alphabeta/{{experimentId}}/` and then to retrive aggergate data a GET request is made to the same address `www.yoursite.com/api/alphabeta/{{experimentId}}/`
 
-  The URL for your endpont can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an `experimentId`.
-
-  So, if your endpoint is located at `www.yoursite.com/api/alphabeta/` (which is AlphaBeta's default setting), then `www.yoursite.com/api/alphabeta/{{experimentId}}/` is required to return data about `{{experimentId}}` when it receives a GET request and needs to save data about `{{experimentId}}` when it receives a POST request.
-
-  (You should also have the base url (the url when no `experimentId` is passed) return a list of your experiments. This is not required, but will be useful for building a page where you can view all of your experiments.)
+  The stem for your endpoint can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an `experimentId`.
+  
+  (You should also have the stem (the url when no `experimentId` is passed) return a list of your experiments. This is not required, but will be useful for building a page where you can view all of your experiments.)
 
   When AlphaBeta POST's data to your endpoint, the POST body should look like this:
   
@@ -89,17 +89,18 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
   }
   ```
 
-  * **variant** tells your datastore which component variant (a or b) was presented to a particular user.
+  * **variant** tells your datastore which component variant (A or B) was presented to a particular user.
 
   * **success** tells your datastore whether the success event occured (true) not (null).
 
-  (Note that the value for this parameter will either be true or null, as opposed to true or false. When **success** is passed as null, that signals that an sample event has occured (a user saw one variant - A or B - of the thing that you're testing). It is passed as null because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as true, that signals that a success event has occured.)
+  (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When **success** is passed as `null`, that signals that an sample event has occured (a user saw one variant - A or B - of the thing that you're testing). It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as `true`, that signals that a success event has occured.)
   
   **userId** is a number between 0 and 1 that AlphaBeta has associated with the particular user in this experiment. It has nothing to do with any other userIds that might be used elsewhere in your application.
 
-  * **metaId** is a value that you can optionally pass to your AlphaBeta component, and is useful in situations where the thing that you're testing occurs multiple times on your site.
+For this simple experiment **metaId** can be `null`, however for more complex experiments see below:
+  * **metaId** is a value that you can optionally pass to your AlphaBeta component, and is useful in situations where the component that you're testing occurs multiple times on your site.
 
-  The earlier example where we were testing the color of a "Sign Up" button on your landing page would be a case where the **metaId** property is probably not necessary, as user will only see the Sign Up button in one context.
+  The earlier example where we were testing the color of a "Sign Up" button on your landing page would be a case where the **metaId** property is (probably) not necessary, as user will only see the Sign Up button in one context.
 
   But imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views has a "like" (or "+1) button below it, and a single user could see (and "like") more than one piece of content. In cases like these, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you use the **metaId** in this way, you would be testing which variant leads to more total likes per piece of content seen. If you did not set the **metaId** at all, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
 
@@ -119,7 +120,7 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
 
   **Step 2:** Code out what happens when data is POST'ed to that endpoint.
 
-  When POST data is received, one of two things may happen - the `trialCount` for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. (Note that there is no case where they both will be incremented in the same call). The logic for which value is incremented and when must be executed by your application's backend, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
+  When POST data is received, one of two things may happen - the `trialCount` for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. (Note: that there is no case where they both will be incremented in the same call). The logic for which value is incremented and when must be executed by your application's backend, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
 
     * if success === null and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment trialCount for the appropriate variant.
 
