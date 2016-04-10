@@ -37,10 +37,11 @@ class DevTools extends React.Component {
 
   renderExperiment(id, value) {
     return (
-      <div style={{display: 'flex'}}>
-        <label>{id}</label>
-        <input type="range" min="0" max="1" step="0.01" name={id} value={value} onChange={this.onChange} />
-      </div>
+        <div key={id} style={{display: 'flex'}}>
+          <label>'Experiment: {id}' 0:</label>
+          <input type="range" min="0" max="1" step="0.01" name={id} value={value} onChange={this.onChange} />
+          :1
+        </div>
     );
   }
 
@@ -54,6 +55,8 @@ class DevTools extends React.Component {
                    padding: '1em',
                    background: '#eee',
                    border: '2px solid #777'}}>
+        <span style={{'textDecoration': 'underline'}}>'Dev Tools:'</span>
+
         {Object.keys(alphaBetaMap).map(id => this.renderExperiment(id, alphaBetaMap[id]))}
         <div>
           {JSON.stringify(this.alphaBetaMap, null, 2)}
