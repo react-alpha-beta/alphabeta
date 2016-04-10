@@ -13,11 +13,23 @@ AlphaBeta is...
 
 ```js
 import { ABComponent } from 'react-alphabeta';
-import { ButtonA, ButtonB } from '../yourCode';
+
 class ButtonA extends React.Component {
   render(){
+    return (<Button onClick={this.props.successEvent} >
+              Button A
+            </Button>)
   }
 }
+
+class ButtonB extends React.Component {
+  render(){
+    return (<Button onClick={this.props.successEvent} >
+              Button B
+            </Button>)
+  }
+}
+
 
 class Page extends React.Component {
     
