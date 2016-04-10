@@ -66,7 +66,7 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
 
   The URL for your endpont can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an `experimentId`.
 
-  So, if your endpoint is located at `www.yoursite.com/api/alphabeta/` (which is AlphaBeta's default setting), then `www.yoursite.com/api/alphabeta/{{experimentId}}/` is required to return data about {{experimentId}} when it receives a GET request and needs to save data about `{{experimentId}}` when it receives a POST request.
+  So, if your endpoint is located at `www.yoursite.com/api/alphabeta/` (which is AlphaBeta's default setting), then `www.yoursite.com/api/alphabeta/{{experimentId}}/` is required to return data about `{{experimentId}}` when it receives a GET request and needs to save data about `{{experimentId}}` when it receives a POST request.
 
   (You should also have the base url (the url when no `experimentId` is passed) return a list of your experiments. This is not required, but will be useful for building a page where you can view all of your experiments.)
 
@@ -85,7 +85,7 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
 
   * **success** tells your datastore whether the success event occured (true) not (null).
 
-  Note that the value for this parameter will either be true or null, as opposed to true or false. When **success** is passed as null, that signals that an sample event has occured (a user saw one variant - A or B - of the thing that you're testing). It is passed as null because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as true, that signals that a success event has occured.
+  (Note that the value for this parameter will either be true or null, as opposed to true or false. When **success** is passed as null, that signals that an sample event has occured (a user saw one variant - A or B - of the thing that you're testing). It is passed as null because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as true, that signals that a success event has occured.)
   
   **userId** is a number between 0 and 1 that AlphaBeta has associated with the particular user in this experiment. It has nothing to do with any other userIds that might be used elsewhere in your application.
 
@@ -93,7 +93,7 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
 
   The earlier example where we were testing the color of a "Sign Up" button on your landing page would be a case where the **metaId** property is probably not necessary, as user will only see the Sign Up button in one context.
 
-  But suppose you instead were testing the copy on a facebook-style "like" button to see if changint "like" to "+1" led to more engagement. Each piece of content a user views has a "like" (or "+1) button below it, and a single user could see (and "like") more than one piece of content. In cases like these, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you use the **metaId** in this way, you would be testing which variant leads to more total likes per piece of content seen. If you did not set the **metaId** at all, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
+  But imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views has a "like" (or "+1) button below it, and a single user could see (and "like") more than one piece of content. In cases like these, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you use the **metaId** in this way, you would be testing which variant leads to more total likes per piece of content seen. If you did not set the **metaId** at all, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
 
   When AlphaBeta GETs data from your endpoint, the returned data should look like this
   ```js
@@ -109,9 +109,9 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
   }
   ```
 
-  **Step 2:** Code out what happens when data is POSTed to that endpoint.
+  **Step 2:** Code out what happens when data is POST'ed to that endpoint.
 
-  When POST data is received, one two things may happen - the trialCount for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. Note that there is no case where they both will be incremented in the same call. The logic for what gets incremented and when must be executed by your application's back end, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
+  When POST data is received, one of two things may happen - the `trialCount` for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. (Note that there is no case where they both will be incremented in the same call). The logic for which value is incremented and when must be executed by your application's backend, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
 
     * if success === null and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment trialCount for the appropriate variant.
 
@@ -121,7 +121,7 @@ You can connect AlphaBeta to a datastore you're already using in three steps.
 
   **Step 3:** Point AlphaBeta to that endpoint.
 
-  By default, AlphaBeta will look for your endpoint at yoursite.com/api/alphabeta. If you would like AlphaBeta to look somewhere other than this location, just define your ALPHA_BETA_ENDPOINT environment variable.
+  By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
 
 ### Usage / Examples
