@@ -165,4 +165,6 @@ $ npm run test:watch  # continuous testing as file changes
 [MIT](LICENSE.md)
 
 ### Credits
-[jackmccloy](@jackmccloy)
+[Jack McCloy](https://github.com/jackmccloy)
+[Brian Park](https://github.com/yaru22)
+[Ben Hall](https://github.com/bxh_io)
