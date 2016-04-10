@@ -50,6 +50,8 @@ describe('Experiment', () => {
       delete stats.details;
       expect(stats).to.eql({
         statisticalSignificance: false,
+        marginOfError: 0.10184458748504997,
+        meanDifferenceValue: 0,
       });
     });
 
@@ -65,6 +67,21 @@ describe('Experiment', () => {
         statisticalSignificance: true,
         marginOfError: 0.0012016894107879958,
         meanDifferenceValue: 0.009999999999999995,
+      });
+    });
+
+    it('should have statistical significance', () => {
+      const stats = computeStats({
+        variant_a_trial_count: 1000,
+        variant_b_trial_count: 2000,
+        variant_a_success_count: 100,
+        variant_b_success_count: 400,
+      }, 0.95);
+      delete stats.details;
+      expect(stats).to.eql({
+        statisticalSignificance: true,
+        marginOfError: 0.037955236792832685,
+        meanDifferenceValue: 0.1,
       });
     });
   });

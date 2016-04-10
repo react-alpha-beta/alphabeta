@@ -56,21 +56,21 @@ $ npm install react-alphabeta --save
 ### Backend / API Setup
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This need to be linked with a datastore isn't unique to AlphaBeta - it is true of split testing in general.
 
-Imagine that you're running an experiment to see if changing your "Sign Up" button from blue to orange leads to more sign ups. To measure which color performs better, you need to keep track of the number of times each buton is seen (impressions) and the number of times each button is clicked (success events or conversions).
+Imagine that you're running an experiment to see if changing your "Sign Up" button from blue to orange leads to more sign ups. To measure which color performs better, you need to keep track of the number of times each button is seen (impressions) and the number of times each button is clicked (success events or conversions).
 
-Given these four values (impressions for button a, conversions for button a, impressions for button b, and conversions for button b), all it takes is a bit of math to estimate (within a range or "confidence interval") which button has a better conversion rate. AlphaBeta does this math for you, but you're responsible for logging the events themselves in your datastore.
+Given these four values (impressions for button A, conversions for button A, impressions for button B, and conversions for button B), all it takes is a bit of math to estimate (within a range or "confidence interval") which button has a better conversion rate. AlphaBeta does this math for you, but you're responsible for logging the events themselves in your datastore.
 
 You can connect AlphaBeta to a datastore you're already using in three steps.
 
   **Step 1:** Build an endpoint for AlphaBeta to POST data to and GET data from.
 
-  The URL for your endpont can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an experimentId.
+  The URL for your endpont can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an `experimentId`.
 
-  So if your endpoint is located at yoursite.com/api/alphabeta/ (which is AlphaBeta's default setting), then https://www.yoursite.com/api/alphabeta/{{experimentId}}/ MUST return data about {{experimentId}} when it receives a GET request and MUST save data about {{experimentId}} when it receives a POST request.
+  So, if your endpoint is located at `www.yoursite.com/api/alphabeta/` (which is AlphaBeta's default setting), then `www.yoursite.com/api/alphabeta/{{experimentId}}/` is required to return data about {{experimentId}} when it receives a GET request and needs to save data about `{{experimentId}}` when it receives a POST request.
 
-  You should also have the base url (the url when no experimentId is passed) return a list of your experiments. This is not required, but will be useful for building a page where you can view all of your experiments.
+  (You should also have the base url (the url when no `experimentId` is passed) return a list of your experiments. This is not required, but will be useful for building a page where you can view all of your experiments.)
 
-  When AlphaBeta POSTs data to your endpoint, the POST body will look like this:
+  When AlphaBeta POST's data to your endpoint, the POST body should look like this:
   
   ```js
   {
