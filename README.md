@@ -134,6 +134,10 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
   By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
 ### Usage / Examples
+* [Button example](examples/button-experiment)
+  Set up an experiment to see which of two button variants has a greater click-through rate.
+
+### DevTools
 
 ### Discussion and Support
 
