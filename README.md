@@ -133,8 +133,15 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
 
   By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
-
 ### Usage / Examples
+
+### Discussion and Support
+
+### Additional Resources
+* [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
+* [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
+
+### Contribute
 
 ### Lint
 ```bash
@@ -146,10 +153,6 @@ $ npm run lint
 $ npm run test        # run once
 $ npm run test:watch  # continuous testing as file changes
 ```
-
-### Resources
-* [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
-* [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
 
 ### License
 [MIT](LICENSE.md)
