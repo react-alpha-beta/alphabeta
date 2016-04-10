@@ -115,6 +115,7 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
           trialCount:   101,
           successCount: 22,
       }
+      confidenceInterval: .95 // the CI you're looking to achieve, expressed as a float
   }
   ```
 
