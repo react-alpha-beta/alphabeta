@@ -15,18 +15,18 @@ AlphaBeta is...
 import { ABComponent } from 'react-alphabeta';
 
 class ButtonA extends React.Component {
-  render(){
+  render() {
     return (<Button onClick={this.props.successEvent} >
               "Button Example A"
-            </Button>)
+            </Button>);
   }
 }
 
 class ButtonB extends React.Component {
-  render(){
+  render() {
     return (<Button onClick={this.props.successEvent} >
               "Button Example B"
-            </Button>)
+            </Button>);
   }
 }
 
@@ -54,7 +54,7 @@ ReactDOM.render(
 );
 ```
 
-Additonally, the AlphaBeta component passes the prop `successAction` to ComponentA and ComponentB (your two variants). `successAction` is a function that should be called when the the event you're measuring occurs. In this experiment your two variants are buttons, so the "onClick" event is probably our `successAction`. Make sure that your code fires successAction when an onClick event occurs in ButtonA or ButtonB.
+The AlphaBeta component passes the prop `successAction` to ComponentA and ComponentB (two variants you supply). `successAction` is a function that should be called when the the event you're measuring occurs. In this experiment your two variants are Buttons, so the "onClick" event is the `successAction`. Make sure that your code fires successAction when an onClick event occurs in `ButtonA` or `ButtonB`.
 
 ### Installation
 ```bash
