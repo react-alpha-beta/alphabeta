@@ -29,10 +29,14 @@ describe('Experiment', () => {
   describe('computeStats()', () => {
     it('should have no significance due to not enough sample data', () => {
       const stats = computeStats({
-        variant_a_trial_count: 100,
-        variant_b_trial_count: 200,
-        variant_a_success_count: 5,
-        variant_b_success_count: 50,
+        variantA: {
+          trialCount: 100,
+          successCount: 5,
+        },
+        variantB: {
+          trialCount: 200,
+          successCount: 50,
+        },
       }, 0.95);
       delete stats.details;
       expect(stats).to.eql({
@@ -42,10 +46,14 @@ describe('Experiment', () => {
 
     it('should have no statistical significance', () => {
       const stats = computeStats({
-        variant_a_trial_count: 100,
-        variant_b_trial_count: 200,
-        variant_a_success_count: 10,
-        variant_b_success_count: 20,
+        variantA: {
+          trialCount: 100,
+          successCount: 10,
+        },
+        variantB: {
+          trialCount: 200,
+          successCount: 20,
+        },
       }, 0.95);
       delete stats.details;
       expect(stats).to.eql({
@@ -57,10 +65,14 @@ describe('Experiment', () => {
 
     it('should have statistical significance', () => {
       const stats = computeStats({
-        variant_a_trial_count: 1000,
-        variant_b_trial_count: 1000,
-        variant_a_success_count: 100,
-        variant_b_success_count: 110,
+        variantA: {
+          trialCount: 1000,
+          successCount: 100,
+        },
+        variantB: {
+          trialCount: 1000,
+          successCount: 110,
+        },
       }, 0.95);
       delete stats.details;
       expect(stats).to.eql({
@@ -72,10 +84,14 @@ describe('Experiment', () => {
 
     it('should have statistical significance', () => {
       const stats = computeStats({
-        variant_a_trial_count: 1000,
-        variant_b_trial_count: 2000,
-        variant_a_success_count: 100,
-        variant_b_success_count: 400,
+        variantA: {
+          trialCount: 1000,
+          successCount: 100,
+        },
+        variantB: {
+          trialCount: 2000,
+          successCount: 400,
+        },
       }, 0.95);
       delete stats.details;
       expect(stats).to.eql({

@@ -80,10 +80,10 @@ function testDetails(probabilityMeanDifference, marginOfError, confidenceInterva
 // let description = "Our best guess is that the absolute rate of success is xxx LOWER|HIGHER for variant B as compared to variant A."
 // description = description + "This result IS|IS NOT statistically significant to CI confidence (we are CI confident that the true difference in rate of success is between FLOOR and CEILING."
 export function computeStats(json, confidenceInterval = 0.95) {
-  const variantATrialCount = json.variant_a_trial_count;
-  const variantBTrialCount = json.variant_b_trial_count;
-  const variantASuccessCount = json.variant_a_success_count;
-  const variantBSuccessCount = json.variant_b_success_count;
+  const variantATrialCount = json.variantA.trialCount;
+  const variantBTrialCount = json.variantB.trialCount;
+  const variantASuccessCount = json.variantA.successCount;
+  const variantBSuccessCount = json.variantB.successCount;
 
   const probabilityMeanA = variantASuccessCount / variantATrialCount;
   const probabilityMeanB = variantBSuccessCount / variantBTrialCount;
