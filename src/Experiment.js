@@ -7,7 +7,7 @@ export function postExperimentData(experimentId, variant, success = null, metaId
   return fetch(`${config.endPoint}/${experimentId}/`, {
   // return fetch(`http://127.0.0.1:8000/api/alphabeta/${experimentId}/`, {
 
-    method: 'PATCH',
+    method: 'POST',
     credentials: 'same-origin',
     headers: {
       'Accept': 'application/json',
