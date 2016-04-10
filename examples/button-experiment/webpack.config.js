@@ -3,7 +3,7 @@ import webpack from 'webpack';
 
 export default {
   // See https://github.com/webpack/webpack/pull/2207
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-source-map',
   entry: [
     './src/index',
   ],

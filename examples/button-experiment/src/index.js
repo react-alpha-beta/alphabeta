@@ -14,28 +14,48 @@ class Page extends React.Component {
     return (
       <div>
         <div>
-          <ABComponent
-              experimentParams={{
-                id: '1',
-                testCohortSize: 0.4,
-              }}
-              ComponentA={ButtonA}
-              ComponentB={ButtonB}
-          />
-        </div>
+          <div style={{'width': '50%',
+                       'margin': 'auto',
+                       'lineHeight': '26px',
+                       'fontSize': '20px'}}>
+            <p>Here are two experiments, each showing two different independent experiments.
+            </p>
+            <p>By modifying the values of sliders in the bottom righthand corner you can alter the chance
+            you (as the current user) have of seeing each button experiment.
+            </p>
+            <p>Try it and see:</p>
+          </div>
 
+          <div style={{'width': '30%',
+                       'margin': 'auto',
+                       'paddingTop': '20px'}}>
+             Experiment 1:
+             <ABComponent
+                experimentParams={{
+                  id: '1',
+                  testCohortSize: 0.4,
+                }}
+                ComponentA={ButtonA}
+                ComponentB={ButtonB}
+            />
+          </div>
+        </div>
         <div>
-          <ABComponent
-              experimentParams={{
-                id: '2',
-                testCohortSize: 0.4,
-              }}
-              ComponentA={<ButtonA text="Alternate Text A" />}
-              ComponentB={<ButtonB text="Alternate Text B" />}
-          />
+          <div style={{'width': '30%',
+                       'margin': 'auto',
+                       'paddingTop': '20px'}}>
+            Experiment 2:
+            <ABComponent
+                experimentParams={{
+                  id: '2',
+                  testCohortSize: 0.4,
+                }}
+                ComponentA={<ButtonA text="Alternate Text A" />}
+                ComponentB={<ButtonB text="Alternate Text B" />}
+            />
+          </div>
         </div>
-
-        <DevTools />
+        <DevTools/>
       </div>
     );
   }
