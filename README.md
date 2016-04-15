@@ -125,11 +125,11 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
 
   When POST data is received, one of two things may happen - the `trialCount` for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. (Note: that there is no case where they both will be incremented in the same call). The logic for which value is incremented and when must be executed by your application's backend, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
 
-    * if success === null and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment trialCount for the appropriate variant.
-
-    * if success === true and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment successCount for the appropriate variant.
-
-    * in all other cases, you should not increment either value.
+  > * if success === null and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment trialCount for the appropriate variant.
+  > 
+  > * if success === true and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment successCount for the appropriate variant.
+  >
+  > * in all other cases, you should not increment either value.
 
   **Step 3:** Point AlphaBeta to that endpoint.
 
@@ -159,12 +159,13 @@ $ npm run lint
 ```bash
 $ npm run test        # run once
 $ npm run test:watch  # continuous testing as file changes
+$ npm run test:cov    # generate test coverage report
 ```
 
 ### License
 [MIT](LICENSE.md)
 
 ### Credits
-[Jack McCloy](https://github.com/jackmccloy)
-[Brian Park](https://github.com/yaru22)
-[Ben Hall](https://github.com/bxh_io)
+- [Jack McCloy](https://github.com/jackmccloy)
+- [Brian Park](https://github.com/yaru22)
+- [Ben Hall](https://github.com/bxh_io)
