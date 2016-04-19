@@ -142,6 +142,6 @@ export function getExperimentData(experimentId) {
   })
   .then(response => response.json())
   .then(json => {
-    computeStats(json);
+    console.log(computeStats(json));
   });
 }

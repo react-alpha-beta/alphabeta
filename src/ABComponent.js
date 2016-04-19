@@ -7,7 +7,7 @@ import React from 'react';
 import { isInCohort } from './Cohort';
 import { localStorageKey } from './constants';
 import { postExperimentData } from './Experiment';
-// import { getExperimentData } from './Experiment';
+import { getExperimentData } from './Experiment';
 
 class ABComponent extends React.Component {
   static displayName = 'ABComponent';
@@ -112,7 +112,7 @@ class ABComponent extends React.Component {
   render() {
     /* Render A/B depending ong the  */
 
-    // getExperimentData(1);
+    getExperimentData(1);
     const { ComponentA, ComponentB } = this.props;
     return this.state.isInCohort
         ? this.renderElementOrComponent(ComponentB)
