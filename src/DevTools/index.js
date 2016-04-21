@@ -39,19 +39,12 @@ class DevTools extends React.Component {
 
   renderExperiment(id, value) {
     return (
-      <div key={id} style={{fontSize: 'small'}}>
-        <div style={{display: 'inline-block', width: '30%'}}>{id}</div>
-        <div style={{display: 'inline-block', width: '20%'}}>{value}</div>
-        <div style={{display: 'inline-block', width: '40%'}}>
-          <input type="range"
-                 min="0"
-                 max="1"
-                 step="0.01"
-                 name={id}
-                 value={value}
-                 onChange={this.onChange} />
-        </div>
-      </div>
+      <tr>
+        <td>{id}</td>
+        <td style={{ 'display': 'flex', 'paddingLeft': '1em' }}>
+          0:<input type="range" min="0" max="1" step="0.01" name={id} value={value} onChange={this.onChange} />:1 ({value})
+        </td>
+      </tr>
     );
   }
 
@@ -79,21 +72,19 @@ class DevTools extends React.Component {
                    padding: '1em',
                    background: '#eee',
                    border: '2px solid #777'}}>
-        <div style={{
-          'display': 'block',
-          'textAlign': 'center',
-          'textDecoration': 'underline',
-        }}>'Dev Tools:'</div>
+        <label style={{'textDecoration': 'underline'}}>Dev Tools</label>
         {refreshMessage}
-
-        <div style={{fontSize: 'small'}}>
-          <div style={{display: 'inline-block', width: '30%', overflow: 'hidden'}}>Experiment</div>
-          <div style={{display: 'inline-block', width: '20%', overflow: 'hidden'}}>UserId</div>
-        </div>
-        {Object.keys(alphaBetaMap).map(id => this.renderExperiment(id, alphaBetaMap[id]))}
-        <div>
-          {JSON.stringify(this.alphaBetaMap, null, 2)}
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(alphaBetaMap).map(id => this.renderExperiment(id, alphaBetaMap[id]))}
+          </tbody>
+        </table>
       </div>
     );
   }

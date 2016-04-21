@@ -1,21 +1,18 @@
 import { localStorageKey } from './constants';
 
-/** Export a function when passed an `experimentParams` dict
-* with `id` and `testCohortSize` keys determines if an experiment
-* should take the expierment
-
-* @params {string} experimentParams.testId: Any valid dict key
-* @params {number} experimentParams.testCohortSize - Number between 0-1,
-* to indicate fraction of users to test with  cohert test size
-*
-**/
+/**
+ * Given an `experimentParams` object with `id` and `testCohortSize`,
+ * it determines whether the user is in the control group or the experimental
+ * group.
+ * It maintains a global registery of experiments in an object. This consists of
+ * a mapping of experiment ids to random numbers, that can be used to determine
+ * if the user is in the experimental group or not.
+ * @params {string} experimentParams.testId - Experiment id.
+ * @params {number} experimentParams.testCohortSize - Number between 0 and 1
+ * that indicates the portion of the users that need to be in the experimental
+ * group.
+ */
 export function isInCohort(experimentParams) {
-  /*
-  Function stores a global registery of experiments in a dict
-  this consists of a mapping of experiment ids to random numbers,
-  that can then be used to determine if the user is in the cohort
-  for that experiment.
-  */
   const experimentId = experimentParams.id;
 
   // Retrieve from storage or create experiment registery

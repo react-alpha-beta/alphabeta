@@ -1,13 +1,16 @@
-/** Core component, passed two React Components (or Elements)
-* and displays a given one depending on the experimental context
-**/
+/**
+ * @fileOverview Given two variants of React Component (or Element), it displays
+ * the appropriate one depending on the experiment context.
+ */
 
 import React from 'react';
 
 import { isInCohort } from './Cohort';
 import { localStorageKey } from './constants';
-import { postExperimentData } from './Experiment';
-import { getExperimentData } from './Experiment';
+import {
+  getExperimentData,
+  postExperimentData,
+} from './Experiment';
 
 class ABComponent extends React.Component {
   static displayName = 'ABComponent';
@@ -33,9 +36,6 @@ class ABComponent extends React.Component {
   };
 
   constructor(props) {
-    /*
-    Assume user is not in the cohort
-    */
     super(props);
     this.state = {
       isInCohort: false,
@@ -44,21 +44,14 @@ class ABComponent extends React.Component {
 
   componentWillMount() {
     this.setState({
-      /* Determine if the user is in the cohort
-         As a function of the experimentParams
-      */
       isInCohort: isInCohort(this.props.experimentParams),
     });
-
-    /* Remove listening to local storage
-       for events involving this key */
     global.addEventListener('storage', this.onStorageEvent);
   }
 
   componentDidMount() {
-    /* Determine an exposable label for the fields shown
-       TODO: Make this a bit more user facing
-    */
+    // Determine an exposable label for the fields shown
+    // TODO: Make this a bit more user facing
     const variant = this.state.isInCohort ? 'b' : 'a';
 
     // Record that the AlphaBeta component was loaded
@@ -67,27 +60,21 @@ class ABComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    /* Remove listening to storage */
     global.removeEventListener('storage', this.onStorageEvent);
   }
 
   successAction = (...args) => {
-    /* Record that successAction occured */
-
     // TODO: Move this up to be a method
     const variant = this.state.isInCohort ? 'b' : 'a';
 
     const experimentId = this.props.experimentParams.id;
     postExperimentData(experimentId, variant, true);
-    if (typeof this.props.successAction !== 'undefined') {
-      // fire the successAction event only if it was passed down to the variant
-      // components
+    if (this.props.successAction) {
       this.props.successAction(...args);
     }
   }
 
   onStorageEvent = (event) => {
-    /* If storage event key matches */
     if (event.key === localStorageKey) {
       this.setState({
         isInCohort: isInCohort(this.props.experimentParams),
@@ -95,12 +82,13 @@ class ABComponent extends React.Component {
     }
   };
 
+  /**
+   * Whether it is passed React element or React component, it renders accordingly.
+   * It also injects `successAction` into the props.
+   * @param  {React.Component|React.element} elemOrComp
+   * @return {React.element}
+   */
   renderElementOrComponent(elemOrComp) {
-    /* Wrapper to standardise being passed either
-       React element or React component
-
-       Injecting successAction into their props
-    */
     const props = {
       successAction: this.successAction,
     };
@@ -110,9 +98,6 @@ class ABComponent extends React.Component {
   }
 
   render() {
-    /* Render A/B depending ong the  */
-
-    getExperimentData(1);
     const { ComponentA, ComponentB } = this.props;
     return this.state.isInCohort
         ? this.renderElementOrComponent(ComponentB)

@@ -8,10 +8,10 @@ class ButtonA extends React.Component {
     successAction: React.PropTypes.func,
   };
 
-  onClick() {
-    console.log('Button A clicked');
+  onClick = () => {
+    console.log('Button Variant A clicked');
     this.props.successAction();
-  }
+  };
 
   render() {
     return (

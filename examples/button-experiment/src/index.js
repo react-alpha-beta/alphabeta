@@ -9,7 +9,6 @@ import ButtonA from './components/ButtonA';
 import ButtonB from './components/ButtonB';
 
 class Page extends React.Component {
-
   render() {
     return (
       <div>
