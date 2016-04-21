@@ -55,7 +55,7 @@ class Page extends React.Component {
             />
           </div>
         </div>
-        <DevTools/>
+        <DevTools />
       </div>
     );
   }
