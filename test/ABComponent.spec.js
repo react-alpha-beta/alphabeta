@@ -1,6 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
 import { expect } from 'chai';
+import { mount } from 'enzyme';
+import { spy } from 'sinon';
 
 import { ButtonA, ButtonB } from './fixture';
 import { ABComponent } from '../src';
@@ -22,7 +23,7 @@ describe('<ABComponent />', () => {
           ComponentA={ButtonA}
           ComponentB={ButtonB} />
       );
-      expect(wrapper.contains(<div>ButtonA</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('ButtonA');
     });
 
     it('should render <ButtonA /> when random number is 0.7 and testCohortSize is 0.4', () => {
@@ -36,7 +37,7 @@ describe('<ABComponent />', () => {
           ComponentA={ButtonA}
           ComponentB={ButtonB} />
       );
-      expect(wrapper.contains(<div>ButtonA</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('ButtonA');
     });
 
     it('should render <ButtonB /> when random number is 0.39 and testCohortSize is 0.4', () => {
@@ -50,7 +51,7 @@ describe('<ABComponent />', () => {
           ComponentA={ButtonA}
           ComponentB={ButtonB} />
       );
-      expect(wrapper.contains(<div>ButtonB</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('ButtonB');
     });
 
     it('should render <ButtonB /> when random number is 0 and testCohortSize is 0.4', () => {
@@ -64,7 +65,7 @@ describe('<ABComponent />', () => {
           ComponentA={ButtonA}
           ComponentB={ButtonB} />
       );
-      expect(wrapper.contains(<div>ButtonB</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('ButtonB');
     });
   });
 
@@ -79,9 +80,9 @@ describe('<ABComponent />', () => {
             testCohortSize: 0.4,
           }}
           ComponentA={<ButtonA text="Alternate Text A" />}
-          ComponentB={<ButtonA text="Alternate Text B" />} />
+          ComponentB={<ButtonB text="Alternate Text B" />} />
       );
-      expect(wrapper.contains(<div>Alternate Text A</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('Alternate Text A');
     });
 
     it('should render <ButtonA /> with value of text prop when random number is 0.7 and testCohortSize is 0.4', () => {
@@ -93,9 +94,9 @@ describe('<ABComponent />', () => {
             testCohortSize: 0.4,
           }}
           ComponentA={<ButtonA text="Alternate Text A" />}
-          ComponentB={<ButtonA text="Alternate Text B" />} />
+          ComponentB={<ButtonB text="Alternate Text B" />} />
       );
-      expect(wrapper.contains(<div>Alternate Text A</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('Alternate Text A');
     });
 
     it('should render <ButtonB /> with value of text prop when random number is 0.39 and testCohortSize is 0.4', () => {
@@ -107,9 +108,9 @@ describe('<ABComponent />', () => {
             testCohortSize: 0.4,
           }}
           ComponentA={<ButtonA text="Alternate Text A" />}
-          ComponentB={<ButtonA text="Alternate Text B" />} />
+          ComponentB={<ButtonB text="Alternate Text B" />} />
       );
-      expect(wrapper.contains(<div>Alternate Text B</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('Alternate Text B');
     });
 
     it('should render <ButtonB /> with value of text prop when random number is 0 and testCohortSize is 0.4', () => {
@@ -121,9 +122,47 @@ describe('<ABComponent />', () => {
             testCohortSize: 0.4,
           }}
           ComponentA={<ButtonA text="Alternate Text A" />}
-          ComponentB={<ButtonA text="Alternate Text B" />} />
+          ComponentB={<ButtonB text="Alternate Text B" />} />
       );
-      expect(wrapper.contains(<div>Alternate Text B</div>)).to.equal(true);
+      expect(wrapper.text()).to.equal('Alternate Text B');
+    });
+  });
+
+  describe('Success action', () => {
+    it('should call success action when <ButtonB /> is rendered', () => {
+      const successAction = spy();
+      Math.random = () => 0;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={<ButtonA text="Alternate Text A" />}
+          ComponentB={<ButtonB text="Alternate Text B" />}
+          successAction={successAction} />
+      );
+      expect(wrapper.text()).to.equal('Alternate Text B');
+      wrapper.simulate('click');
+      expect(successAction.calledOnce).to.equal(true);
+    });
+
+    it('should call success action when <ButtonA /> is rendered', () => {
+      const successAction = spy();
+      Math.random = () => 0.45;
+      const wrapper = mount(
+        <ABComponent
+          experimentParams={{
+            id: 'button-experiment',
+            testCohortSize: 0.4,
+          }}
+          ComponentA={<ButtonA text="Alternate Text A" />}
+          ComponentB={<ButtonB text="Alternate Text B" />}
+          successAction={successAction} />
+      );
+      expect(wrapper.text()).to.equal('Alternate Text A');
+      wrapper.simulate('click');
+      expect(successAction.calledOnce).to.equal(true);
     });
   });
 });
