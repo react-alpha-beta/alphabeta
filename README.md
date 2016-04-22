@@ -142,13 +142,35 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
 
 ### AlphaBeta DevTools
 
+AlphaBeta comes with a DevTools component that can be used on any page containing an experiment.
+
+```js
+import { ABComponent, DevTools } from 'react-alphabeta';
+
+// ***
+// Build your experiment component, which we'll call <Page /> here.
+// Make sure that <DevTools /> is in your <Page /> component.
+// ***
+
+ReactDOM.render(
+    <Page />,
+    document.getElementById('app')
+);
+```
+
+One easy way to familiarize yourself with the DevTools component is to load the [Button example](examples/button-experiment).
+
+If the DevTools component is included on your page and you are not in a production environment (i.e. process.env.NODE_ENV !== 'production), you should see a DevTools box in the lower right hand corner of your screen. This box lets you control your user cohort value for each of the experiments on the page. Recall that the user cohort value for an experiment, along with the _testCohortSize_ parameter, determine which variant a user sees.
+
+If the user cohort value is greater than or equal to _testCohortSize_, the user will see variant A for this experiment. If the user cohort value is less than _testCohortSize_, the user will see variant B. When you manipulate the DevTools sliders, you are changing your user cohort value for an experiment. These changes will take place when you refresh the page.
+
+You can add the DevTools component to the lower level components that contain your experiments, or to higher level components of your application.
+
 ### Discussion and Support
 
 ### Additional Resources
 * [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
 * [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
-
-### Contribute
 
 ### Lint
 ```bash
@@ -162,7 +184,7 @@ $ npm run test:watch  # continuous testing as file changes
 $ npm run test:cov    # generate test coverage report
 ```
 
-### Commit
+### Contribute
 We are using [commitizen](https://commitizen.github.io/cz-cli/) to make commit format consistent.
 ```bash
 # Install the command line tool. 

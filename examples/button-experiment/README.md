@@ -17,7 +17,7 @@ If everything is working correctly, you should see two buttons on a coral-colore
 
 **Passing your variants to AlphaBeta**
 
-Each button represents a test - _Test 1_ and _Test 2_. Take a moment to look at how these tests are defined in [examples/button-experiment/src/index.js](examples/button-experiment/src/index.js). They're pretty similar, but there are a few important differences. 
+Each button represents a test - _Test 1_ and _Test 2_. Take a moment to look at how these tests are defined in [examples/button-experiment/src/index.js](/examples/button-experiment/src/index.js). They're pretty similar, but there are a few important differences. 
 
 In _Test 1_, the two variant component (variants) are passed to the AlphaBeta component as instances. In _Test 2_, they are passed as component elements. Also, in _Test 2_, the same component is used for both variants - the difference is that the _text_ prop passed to each variant is different.
 
@@ -37,5 +37,3 @@ In addition to the two variants you pass to AlphaBeta, you also need to pass you
 In the lower right corner of your screen, you should see a DevTools box. This box lets you control your user cohort value for each of the experiments on the page. Recall that the user cohort value for an experiment, along with the _testCohortSize_ parameter, determine which variant a user sees.
 
 If the user cohort value is greater than or equal to _testCohortSize_, the user will see variant A for this experiment. If the user cohort value is less than _testCohortSize_, the user will see variant B. Try moving your DevTools sliders all the way to the left. When you refresh the page, you'll notice that you're seeing Variant B for both experiments. If you move your sliders to the right and refresh, you'll see Variant A.
-
-You can add the DevTools box to any page with an experiment on it easily alter which cohort you are in.
