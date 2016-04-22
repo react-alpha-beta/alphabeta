@@ -13,6 +13,8 @@ $ open http://localhost:3000
 
 If everything is working correctly, you should see two buttons on a coral-colored background. You should also see a grey "DevTools" box in the lower righthand corner. If this isn't what you see, make sure your API endpoint is properly set up before proceeding.
 
+![Screenshot](./screenshot.png)
+
 ### So what am I looking at?
 
 **Passing your variants to AlphaBeta**
