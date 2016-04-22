@@ -162,6 +162,18 @@ $ npm run test:watch  # continuous testing as file changes
 $ npm run test:cov    # generate test coverage report
 ```
 
+### Commit
+We are using [commitizen](https://commitizen.github.io/cz-cli/) to make commit format consistent.
+```bash
+# Install the command line tool. 
+$ npm install -g commitizen
+
+# From then on, whenever you would like to commit:
+$ git add .
+$ git cz
+# ... follow the prompt messages
+```
+
 ### License
 [MIT](LICENSE.md)
 
