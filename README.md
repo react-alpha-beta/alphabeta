@@ -63,15 +63,17 @@ $ npm install react-alphabeta --save
 
 ### Overiew and Basic Usage
 
-The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two varients of whatever it is that you're testing. Each user that encounters the AlphaBeta component will see one of the two varients.
+The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two varients you're testing. Each user that encounters the AlphaBeta component will see one of the two varients, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occured.
 
-In each of your AlphaBeta components, you'll also pass `experimentParams`, an object containing the keys `id` and `testCohortSize`. `id` is the unique id of a particular experiment, and is passed by the AlphaBeta component to your Backend / API (described below). Each AlphaBeta component that you declare should have a unique `id` associated with it.
+In each of your AlphaBeta components, you'll pass `experimentParams`, an object containing the keys `id` and `testCohortSize`. `id` is the unique id of a particular experiment, and is passed by the AlphaBeta component to your Backend / API (described below). Each AlphaBeta component that you declare should have a unique `id` associated with it.
 
-`testCohortSize` is a number between 0.0 and 1.0, and its value tells your AlphaBeta component what proportion of your users will see each experiment variant. A value of 0.01 means that only 1% of your users should see the variant you pass as `ComponentB`, while the other 99% should see `ComponentA`, while a value of .5 means that there should be an even split between the two variants.
+`testCohortSize` is a number between 0.0 and 1.0, and its value tells your AlphaBeta component what proportion of your users will see each experiment variant. A `testCohortSize` value of 0.01 means that 1% of your users should see the `ComponentB` variant - the other 99% should see `ComponentA`. A value of .5 indicates that there should be an even split between the two variants.
 
-When you wrap your `ComponentA` and `ComponentB` - your variants - in an AlphaBeta component, the AlphaBeta component passes the prop `successAction` each of them. You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above example). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
+When you wrap your variants - in an AlphaBeta component, the AlphaBeta component passes the prop `successAction` to each of them.
 
-You can define "success" however you want, but it is your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs.
+You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above example). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
+
+Note that, while you have the ability to define "success" however you want, it is also your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise AlphaBeta will have no way of giving you guidance about which variant is is more likely to produce the desired outcome.
 
 The [Button example](examples/button-experiment) is designed to help you get comfortable using the AlphaBeta component. You'll need to set up your Backend / API for the example to work (instructions below), but reading through the example may help you better understand how to use AlphaBeta, even prior to fully setting things up.
 
