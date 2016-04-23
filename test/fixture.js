@@ -36,11 +36,12 @@ global.localStorage = {
 export class ButtonA extends React.Component {
   static propTypes = {
     text: React.PropTypes.string,
+    successAction: React.PropTypes.func,
   };
 
   render() {
     return (
-      <div>{this.props.text || 'ButtonA'}</div>
+      <div onClick={this.props.successAction}>{this.props.text || 'ButtonA'}</div>
     );
   }
 }
@@ -48,11 +49,12 @@ export class ButtonA extends React.Component {
 export class ButtonB extends React.Component {
   static propTypes = {
     text: React.PropTypes.string,
+    successAction: React.PropTypes.func,
   };
 
   render() {
     return (
-      <div>{this.props.text || 'ButtonB'}</div>
+      <div onClick={this.props.successAction}>{this.props.text || 'ButtonB'}</div>
     );
   }
 }
