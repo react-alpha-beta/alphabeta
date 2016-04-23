@@ -32,7 +32,6 @@ class ButtonB extends React.Component {
   }
 }
 
-
 class Page extends React.Component {
     render() {
         return (
@@ -56,12 +55,25 @@ ReactDOM.render(
 );
 ```
 
-The AlphaBeta component passes the prop `successAction` to ComponentA and ComponentB (two variants you supply). `successAction` is a function that should be called when the the event you're measuring occurs. In this experiment your two variants are Buttons, so the "onClick" event is the `successAction`. Make sure that your code fires successAction when an onClick event occurs in `ButtonA` or `ButtonB`.
-
 ### Installation
+
 ```bash
 $ npm install react-alphabeta --save
 ```
+
+### Overiew and Basic Usage
+
+The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two varients of whatever it is that you're testing. Each user that encounters the AlphaBeta component will see one of the two varients.
+
+In each of your AlphaBeta components, you'll also pass `experimentParams`, an object containing the keys `id` and `testCohortSize`. `id` is the unique id of a particular experiment, and is passed by the AlphaBeta component to your Backend / API (described below). Each AlphaBeta component that you declare should have a unique `id` associated with it.
+
+`testCohortSize` is a number between 0.0 and 1.0, and its value tells your AlphaBeta component what proportion of your users will see each experiment variant. A value of 0.01 means that only 1% of your users should see the variant you pass as `ComponentB`, while the other 99% should see `ComponentA`, while a value of .5 means that there should be an even split between the two variants.
+
+When you wrap your `ComponentA` and `ComponentB` - your variants - in an AlphaBeta component, the AlphaBeta component passes the prop `successAction` each of them. You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above example). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
+
+You can define "success" however you want, but it is your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs.
+
+The [Button example](examples/button-experiment) is designed to help you get comfortable using the AlphaBeta component. You'll need to set up your Backend / API for the example to work (instructions below), but reading through the example may help you better understand how to use AlphaBeta, even prior to fully setting things up.
 
 ### Backend / API Setup
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This need to be linked with a datastore isn't unique to AlphaBeta - it is true of split testing in general.
@@ -135,7 +147,7 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
 
   By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
-### Usage / Example
+### Example
 *Note: in order for this example to work, you must first set up an API endpoint for AlphaBeta to consume. If you haven't done this yet, follow the steps in [Backend / API Setup](README.md#backend--api-setup)*
 
 * [Button example](examples/button-experiment): Set up an experiment to see which of two button variants has a greater click-through rate. This example covers (i) basic experiment setup, (ii) the two ways to pass your variant components to the AlphaBeta component, and (iii) basic useage of the AlphaBeta DevTools.
