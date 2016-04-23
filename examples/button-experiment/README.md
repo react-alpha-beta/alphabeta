@@ -31,7 +31,7 @@ In addition to the two variants you pass to AlphaBeta, you also need to pass you
 
   * **_id_**: Each of your experiments must have a unique _id_. The _id_ will be sent to the AlphaBeta endpoint you set up, and will be used by your back end to uniquely identify this test and record it's data.
 
-  If you haven't set up set up the endpoint that AlphaBeta will consume yet, follow the steps outlined in [#backend--api-setup](#backend--api-setup) and do that first - Otherwise AlphaBeta won't work!.
+  If you haven't set up set up the endpoint that AlphaBeta will consume yet, follow the steps outlined in [#backend--api-setup](https://github.com/react-alpha-beta/alphabeta#backend--api-setup) and do that first - Otherwise AlphaBeta won't work!.
 
   * **_testCohortSize_**: Your _testCohortSize_ parameter should be a number between 0.0 and 1.00, and it represents what proportion of your users will see the B variant of your test. So if you set _testCohortSize_ to 0.1, 90% of your users will see ComponentA and the other 10% will see ComponentB. If you set _testCohortSize_ to 0.5, half of your users will see each variant.
 
