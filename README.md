@@ -5,8 +5,8 @@ your React app.
 
 AlphaBeta is...
 * **declarative:** Like React itself, AlphaBeta benefits from the advantages of declarative programming. The AlphaBeta component is, in fact, just a special type of React component that "wraps" the component variants you're testing.
-* **lightweight:** The AlphaBeta package is small and the AlphaBeta component is thin, so AlphaBeta tests won't measurably increse the time it takes for your application to render. Since AlphaBeta is so lightweight, you can be less selective about what you choose to test - it may even make sense to run single-variant tests, wraping components you may test in the future in an AlphaBeta component to establish a baseline for comparison.
-* **backend agnostic:** Since split testing requires that you store event data, AlphaBeta will need to communicate with your datastore in order to work. But AlphaBeta will work with whatever datastore you're currently - just follow the instructions in "Getting Started" to build your endpoint, point AlphaBeta to it, and you're good to go.
+* **lightweight:** The AlphaBeta package is small and the AlphaBeta component is thin, so AlphaBeta tests won't measurably increse the time it takes for your application to render. Since AlphaBeta is so lightweight, you can be less selective about what you choose to test - it may even make sense to run single-variant tests, wraping components you may test in the future in an AlphaBeta component today in order to establish a baseline for comparison.
+* **backend agnostic:** Since split testing requires that you store event data, AlphaBeta needs to communicate with a datastore in order to work. But AlphaBeta will work with whatever datastore you're currently using - just follow the instructions in [Backend / API Setup](README.md#backend--api-setup) to build your endpoint, point AlphaBeta to it, and you're good to go.
 * **extensible:** AlphaBeta is designed to make it easy for developers to integrate basic split tests into their React apps without having to think about the the underlying statistics. But it's also possible to build your own custom logic around how confidence intervals are calculated and how user cohorting works within your app.
 
 **Building your first A/B test is simple:**
@@ -16,7 +16,7 @@ import { ABComponent } from 'react-alphabeta';
 
 class ButtonA extends React.Component {
   render() {
-    return (<Button onClick={this.props.successEvent} 
+    return (<Button onClick={this.props.successAction} 
                     style={{'background-color':'blue'}}/>
               "Sign Up"
             </Button>);
@@ -25,7 +25,7 @@ class ButtonA extends React.Component {
 
 class ButtonB extends React.Component {
   render() {
-    return (<Button onClick={this.props.successEvent} 
+    return (<Button onClick={this.props.successAction} 
                     style={{'background-color':'orange'}}/>
               "Sign Up"
             </Button>);
@@ -65,15 +65,17 @@ $ npm install react-alphabeta --save
 
 The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two varients you're testing. Each user that encounters the AlphaBeta component will see one of the two varients, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occured.
 
-In each of your AlphaBeta components, you'll pass `experimentParams`, an object containing the keys `id` and `testCohortSize`. `id` is the unique id of a particular experiment, and is passed by the AlphaBeta component to your Backend / API (described below). Each AlphaBeta component that you declare should have a unique `id` associated with it.
+In additon to your `ComponentA` and `ComponentB` variants, you'll also pass `experimentParams` to each of your AlphaBeta components. `experimentParams` is an object containing the keys `id` and `testCohortSize`.
 
-`testCohortSize` is a number between 0.0 and 1.0, and its value tells your AlphaBeta component what proportion of your users will see each experiment variant. A `testCohortSize` value of 0.01 means that 1% of your users should see the `ComponentB` variant - the other 99% should see `ComponentA`. A value of .5 indicates that there should be an even split between the two variants.
+`id` is the unique id of a particular experiment, and is passed by the AlphaBeta component to your Backend / API (described below). Each AlphaBeta component that you declare should have a unique `id` associated with it.
 
-When you wrap your variants - in an AlphaBeta component, the AlphaBeta component passes the prop `successAction` to each of them.
+`testCohortSize` is a number between 0.0 and 1.0. Its value tells your AlphaBeta component what proportion of your users will see each experiment variant. A `testCohortSize` value of 0.01 means that 1% of your users should see the `ComponentB` variant - the other 99% should see `ComponentA`. A value of .5 indicates that there should be an even split between the two variants.
 
-You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above example). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
+When you wrap your variants in an AlphaBeta component, the AlphaBeta component passes the prop `successAction` to each of them.
 
-Note that, while you have the ability to define "success" however you want, it is also your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise AlphaBeta will have no way of giving you guidance about which variant is is more likely to produce the desired outcome.
+You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above code sample). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
+
+Note that while you have the ability to define "success" however you want, it is also your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise AlphaBeta will have no way of giving you guidance about which variant is is more likely to produce the desired outcome.
 
 The [Button example](examples/button-experiment) is designed to help you get comfortable using the AlphaBeta component. You'll need to set up your Backend / API for the example to work (instructions below), but reading through the example may help you better understand how to use AlphaBeta, even prior to fully setting things up.
 
