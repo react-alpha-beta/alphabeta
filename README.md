@@ -55,13 +55,13 @@ ReactDOM.render(
 );
 ```
 
-### Installation
+## Installation
 
 ```bash
 $ npm install react-alphabeta --save
 ```
 
-### Overiew and Basic Usage
+## Overiew and Basic Usage
 
 The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two varients you're testing. Each user that encounters the AlphaBeta component will see one of the two varients, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occured.
 
@@ -79,12 +79,19 @@ Note that while you have the ability to define "success" however you want, it is
 
 The [Button example](examples/button-experiment) is designed to help you get comfortable using the AlphaBeta component. You'll need to set up your Backend / API for the example to work (instructions below), but reading through the example may help you better understand how to use AlphaBeta, even prior to fully setting things up.
 
-### Backend / API Setup
-In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. This need to be linked with a datastore isn't unique to AlphaBeta - it is true of split testing in general.
+## Backend / API Setup
 
-Imagine that you're running an experiment to see if changing your "Sign Up" button from blue (button A) to orange (button B) leads to more sign ups. To measure which color performs better, you need to keep track of the number of times each button is seen (refered to as impressions) and the number of times each button is clicked (success events or conversions).
+### Wait, AlphaBeta Needs a Backend?
 
-Given these four values (impressions for `button A`, conversions for `button A`, impressions for `button B`, and conversions for `button B`), all it takes is a bit of math to estimate (within a range or "confidence interval") which button has a better conversion rate. AlphaBeta does this math for you, but you're responsible for logging the events themselves in your datastore.
+In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. In other words, it needs to be linked to a datastore of some type. This reliance on a datastore isn't unique to AlphaBeta - it is true of split testing in general.
+
+Imagine that you're running an experiment to see if changing a particular button from a transparent background (variant A) to a solid blue background (variant B) leads to more clicks. If you're already looked at the [Button example](examples/button-experiment), you're aware that this is what we're testing in "Experiment 1" of that example.
+
+To measure which variant performs better, you need to keep track of each variant's "impressions" (how many users have seen each button) and "conversions" (how many times each button is clicked).
+
+When we are able to keep track of these values, all it takes is a bit of math to estimate (within a specific range or "confidence interval") which button leads to more conversions. AlphaBeta handles this math for you, but you're responsible for logging the events themselves in your datastore.
+
+### So How Do I Set Up My AlphaBeta Endpoint?
 
 You can connect AlphaBeta to a datastore you're already using in three steps.
 
@@ -151,12 +158,12 @@ For this simple experiment **metaId** can be `null`, however for more complex ex
 
   By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
-### Example
+## Example
 *Note: in order for this example to work, you must first set up an API endpoint for AlphaBeta to consume. If you haven't done this yet, follow the steps in [Backend / API Setup](README.md#backend--api-setup)*
 
 * [Button example](examples/button-experiment): Set up an experiment to see which of two button variants has a greater click-through rate. This example covers (i) basic experiment setup, (ii) the two ways to pass your variant components to the AlphaBeta component, and (iii) basic useage of the AlphaBeta DevTools.
 
-### AlphaBeta DevTools
+## AlphaBeta DevTools
 
 AlphaBeta comes with a DevTools component that can be used on any page containing an experiment.
 
@@ -182,25 +189,25 @@ If the user cohort value is greater than or equal to _testCohortSize_, the user 
 
 You can add the DevTools component to the lower level components that contain your experiments, or to higher level components of your application.
 
-### Discussion and Support
+## Discussion and Support
 
-### Additional Resources
+## Additional Resources
 * [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
 * [Hypothesis testing with one sample (Khan Academy)](https://www.khanacademy.org/math/probability/statistics-inferential/hypothesis-testing/v/hypothesis-testing-and-p-values)
 
-### Lint
+## Lint
 ```bash
 $ npm run lint
 ```
 
-### Test
+## Test
 ```bash
 $ npm run test        # run once
 $ npm run test:watch  # continuous testing as file changes
 $ npm run test:cov    # generate test coverage report
 ```
 
-### Contribute
+## Contribute
 We are using [commitizen](https://commitizen.github.io/cz-cli/) to make commit format consistent.
 ```bash
 # Install the command line tool. 
@@ -212,10 +219,10 @@ $ git cz
 # ... follow the prompt messages
 ```
 
-### License
+## License
 [MIT](LICENSE.md)
 
-### Credits
+## Credits
 - [Jack McCloy](https://github.com/jackmccloy)
 - [Brian Park](https://github.com/yaru22)
 - [Ben Hall](https://github.com/bxh_io)
