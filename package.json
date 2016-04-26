@@ -1,5 +1,5 @@
 {
-  "name": "alpha-beta-component",
+  "name": "react-alpha-beta",
   "version": "0.1.0",
   "description": "Simple declarative A/B testing component for React.",
   "main": "lib/index",
