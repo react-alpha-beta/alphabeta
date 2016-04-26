@@ -134,7 +134,7 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
 
   Imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views in his/her news feed should have a "like" (or "+1) button below it. But since each user has multiple items in his/her feed, a single user could "like" more than one piece of content.
 
-  In this case, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you were to set the **metaId**, you would be testing which variant leads to more total likes per unit of content seen. If you were to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
+  In this case, you could set a `metaId` that uniquely identfies the piece of content being "liked". If you were to set the `metaId`, you would be testing which variant leads to more total likes per unit of content seen. If you were to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
 
 **Ensure Your Endpoint Responds to GET Requests Correctly**
 
