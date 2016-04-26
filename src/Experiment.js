@@ -15,7 +15,7 @@ export function postExperimentData(experimentId, variant, success = null, metaId
       experimentId: experimentId,
       metaId: metaId,
       success: success,
-      userId: JSON.parse(global.localStorage.getItem('alphaBetaMap'))[experimentId],
+      userCohortValue: JSON.parse(global.localStorage.getItem('alphaBetaMap'))[experimentId],
       variant: variant,
     }),
   });
@@ -142,6 +142,6 @@ export function getExperimentData(experimentId) {
   })
   .then(response => response.json())
   .then(json => {
-    console.log(computeStats(json));
+    computeStats(json);
   });
 }

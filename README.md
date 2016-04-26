@@ -61,11 +61,11 @@ ReactDOM.render(
 $ npm install react-alphabeta --save
 ```
 
-## Overiew and Basic Usage
+## Overview and Basic Usage
 
-The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two variants you're testing. Each user that encounters the AlphaBeta component will see one of the two variants, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occured.
+The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two variants you're testing. Each user that encounters the AlphaBeta component will see one of the two variants, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occurred.
 
-In additon to your `ComponentA` and `ComponentB` variants, you'll also pass `experimentParams` to each of your AlphaBeta components. `experimentParams` is an object containing the keys `id` and `testCohortSize`.
+In addition to your `ComponentA` and `ComponentB` variants, you'll also pass `experimentParams` to each of your AlphaBeta components. `experimentParams` is an object containing the keys `id` and `testCohortSize`.
 
 `id` is the unique id of a particular experiment, and is passed by the AlphaBeta component to your Backend / API (described below). Each AlphaBeta component that you declare should have a unique `id` associated with it.
 
@@ -75,7 +75,7 @@ When you wrap your variants in an AlphaBeta component, the AlphaBeta component p
 
 You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above code sample). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
 
-Note that while you have the ability to define "success" however you want, it is also your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise, AlphaBeta will have no way of giving you guidance about which variant is more likely to produce the desired outcome.
+Note that while you have the ability to define "success" however you want, it is also your responsibility to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise, AlphaBeta will have no way of giving you guidance about which variant is more likely to produce the desired outcome.
 
 The [Button example](examples/button-experiment) is designed to help you get comfortable using the AlphaBeta component. You'll need to set up your Backend / API for the example to work (instructions below), but reading through the example may help you better understand how to use AlphaBeta, even prior to fully setting things up.
 
@@ -113,10 +113,10 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
   
 ```js
 {
-    variant: "a",    // this will either be "a" or "b"
-    success: null,   // this will either be null or true
-    userId: .10392,  // a number between 0 and 1
-    metaId: null,    // this will be null unless you choose to set it
+    variant: "a",             // this will either be "a" or "b"
+    success: null,            // this will either be null or true
+    userCohortValue: .10392,  // a number between 0 and 1
+    metaId: null,             // this will be null unless you choose to set it
 }
 ```
 
@@ -124,9 +124,9 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
 
   * `success` tells your datastore whether the success event occured (`true`) or not (`null`).
 
-    (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When `success` is passed as `null`, that signals that an impression has occured. It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When `success` is passed as `true`, that signals that a success event has occured.)
+    (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When `success` is passed as `null`, that signals that an impression has occurred. It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When `success` is passed as `true`, that signals that a success event has occurred.)
   
-  * `userId` is a number between 0.0 and 1.0 that AlphaBeta has associated with the particular user in this experiment. We also refer to this number as the "user cohort value", as it's core to how AlphaBeta seperates users into cohorts. It is automatically generated, and has nothing to do with any other userIds that may be used elsewhere in your application.
+  * `userCohortValue` is a number between 0.0 and 1.0 that AlphaBeta has associated with the particular user in this experiment. This number is randomly generated the first time a user encounters a particular AlphaBeta experiment, and is core to how AlphaBeta separates users into cohorts.
 
   * `metaId` is a value that you can optionally pass to your AlphaBeta component. It should be used in cases where the component that you're testing occurs more than one time times on your site.
 
@@ -134,7 +134,7 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
 
   Imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views in his/her news feed should have a "like" (or "+1) button below it. But since each user has multiple items in his/her feed, a single user could "like" more than one piece of content.
 
-  In this case, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you were to set the **metaId**, you would be testing which variant leads to more total likes per unit of content seen. If you were to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
+  In this case, you could set a `metaId` that uniquely identifies the piece of content being "liked". If you were to set the `metaId`, you would be testing which variant leads to more total likes per unit of content seen. If you were to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
 
 **Ensure Your Endpoint Responds to GET Requests Correctly**
 
@@ -167,9 +167,9 @@ When POST data is received, one of three things is supposed to happen:
 
 The logic for what should happen must be executed by your application's backend. Here's how things should work:
 
-  * if `success` === `null` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
+  * if `success` === `null` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
   
-  * if `success` === `true` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
+  * if `success` === `true` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
   
   * in all other cases, you should not take any action.
 
@@ -212,6 +212,7 @@ If the user cohort value is greater than or equal to `testCohortSize`, the user 
 You can add the DevTools component to the lower level components that contain your experiments, or to higher level components of your application.
 
 ## Discussion and Support
+Join our [Slack team](http://alphabeta.launchrock.com/)!
 
 ## Additional Resources
 * [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
