@@ -8,7 +8,6 @@ import React from 'react';
 import { isInCohort } from './Cohort';
 import { localStorageKey } from './constants';
 import {
-  getExperimentData,
   postExperimentData,
 } from './Experiment';
 

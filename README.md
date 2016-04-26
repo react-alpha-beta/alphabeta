@@ -113,10 +113,10 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
   
 ```js
 {
-    variant: "a",    // this will either be "a" or "b"
-    success: null,   // this will either be null or true
-    userId: .10392,  // a number between 0 and 1
-    metaId: null,    // this will be null unless you choose to set it
+    variant: "a",             // this will either be "a" or "b"
+    success: null,            // this will either be null or true
+    userCohortValue: .10392,  // a number between 0 and 1
+    metaId: null,             // this will be null unless you choose to set it
 }
 ```
 
@@ -126,7 +126,7 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
 
     (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When `success` is passed as `null`, that signals that an impression has occurred. It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When `success` is passed as `true`, that signals that a success event has occurred.)
   
-  * `userId` is a number between 0.0 and 1.0 that AlphaBeta has associated with the particular user in this experiment. We also refer to this number as the "user cohort value", as it's core to how AlphaBeta separates users into cohorts. It is automatically generated, and has nothing to do with any other userIds that may be used elsewhere in your application.
+  * `userCohortValue` is a number between 0.0 and 1.0 that AlphaBeta has associated with the particular user in this experiment. This number is randomly generated the first time a user encounters a particular AlphaBeta experiment, and is core to how AlphaBeta separates users into cohorts.
 
   * `metaId` is a value that you can optionally pass to your AlphaBeta component. It should be used in cases where the component that you're testing occurs more than one time times on your site.
 
@@ -167,9 +167,9 @@ When POST data is received, one of three things is supposed to happen:
 
 The logic for what should happen must be executed by your application's backend. Here's how things should work:
 
-  * if `success` === `null` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
+  * if `success` === `null` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
   
-  * if `success` === `true` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
+  * if `success` === `true` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
   
   * in all other cases, you should not take any action.
 
