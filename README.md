@@ -155,7 +155,7 @@ When AlphaBeta GETs data from your endpoint, the returned data should look like 
 
 #### Step 2:
 
-**Ensure Your Endpoint Processes POST Requests Correctly**
+**Ensure Your Back End Processes POST Requests Correctly**
 
 When POST data is received, one of three things is supposed to happen:
 
