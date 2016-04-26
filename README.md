@@ -104,7 +104,7 @@ When we are able to keep track of these values, all it takes is a bit of math to
 
 ### So How Do I Set Up My AlphaBeta Endpoint?
 
-You can connect AlphaBeta to a datastore you're already using in three steps.
+You can connect AlphaBeta to a datastore you're already using in two steps.
 
 #### Step 1:
 
@@ -183,12 +183,6 @@ The logic for what should happen must be executed by your application's backend.
   * if `success` === `true` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
   
   * in all other cases, you should not take any action.
-
-#### Step 3:
-
-**Make Sure AlphaBeta is Pointed To Your Endpoint**
-
-By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
 ## Checking Your Experiment Results
 
