@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Simple declarative A/B testing component for React.",
   "main": "lib/index",
+  "files": [
+    "*.md",
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "lint": "\"`npm bin`\"/eslint --ext .js,.jsx .",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
