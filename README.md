@@ -5,9 +5,9 @@ your React app.
 
 AlphaBeta is...
 * **declarative:** Like React itself, AlphaBeta benefits from the advantages of declarative programming. The AlphaBeta component is, in fact, just a special type of React component that "wraps" the component variants you're testing.
-* **lightweight:** The AlphaBeta package is small and the AlphaBeta component is thin, so AlphaBeta tests won't measurably increse the time it takes for your application to render. Since AlphaBeta is so lightweight, you can be less selective about what you choose to test - it may even make sense to run single-variant tests, wraping components you may test in the future in an AlphaBeta component today in order to establish a baseline for comparison.
+* **lightweight:** The AlphaBeta package is small and the AlphaBeta component is thin, so AlphaBeta tests won't measurably increase the time it takes for your application to render. Since AlphaBeta is so lightweight, you can be less selective about what you choose to test - it may even make sense to run single-variant tests, wrapping components you may test in the future in an AlphaBeta component today in order to establish a baseline for comparison.
 * **backend agnostic:** Since split testing requires that you store event data, AlphaBeta needs to communicate with a datastore in order to work. But AlphaBeta will work with whatever datastore you're currently using - just follow the instructions in [Backend / API Setup](README.md#backend--api-setup) to build your endpoint, point AlphaBeta to it, and you're good to go.
-* **extensible:** AlphaBeta is designed to make it easy for developers to integrate basic split tests into their React apps without having to think about the the underlying statistics. But it's also possible to build your own custom logic around how confidence intervals are calculated and how user cohorting works within your app.
+* **extensible:** AlphaBeta is designed to make it easy for developers to integrate basic split tests into their React apps without having to think about the underlying statistics. But it's also possible to build your own custom logic around how confidence intervals are calculated and how user cohorting works within your app.
 
 **Building your first A/B test is simple:**
 
@@ -63,7 +63,7 @@ $ npm install react-alphabeta --save
 
 ## Overiew and Basic Usage
 
-The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two varients you're testing. Each user that encounters the AlphaBeta component will see one of the two varients, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occured.
+The AlphaBeta component is a React component that "wraps" two other components. These two "wrapped" components are passed as `ComponentA` and `ComponentB`, and they represent the two variants you're testing. Each user that encounters the AlphaBeta component will see one of the two variants, and the AlphaBeta component will report back to your server (i) which variant was displayed and (ii) if a success event occured.
 
 In additon to your `ComponentA` and `ComponentB` variants, you'll also pass `experimentParams` to each of your AlphaBeta components. `experimentParams` is an object containing the keys `id` and `testCohortSize`.
 
@@ -75,7 +75,7 @@ When you wrap your variants in an AlphaBeta component, the AlphaBeta component p
 
 You get to decide what constitutes "success" in the context of your experiment. If you're testing a button variation, "success" might be defined as a click (this is the case in the above code sample). If you're testing a landing page variation, "success" might be defined as submitting a validated form.
 
-Note that while you have the ability to define "success" however you want, it is also your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise AlphaBeta will have no way of giving you guidance about which variant is is more likely to produce the desired outcome.
+Note that while you have the ability to define "success" however you want, it is also your responsability to make sure that `successAction` is fired by each of your variants when "success" occurs. Otherwise, AlphaBeta will have no way of giving you guidance about which variant is more likely to produce the desired outcome.
 
 The [Button example](examples/button-experiment) is designed to help you get comfortable using the AlphaBeta component. You'll need to set up your Backend / API for the example to work (instructions below), but reading through the example may help you better understand how to use AlphaBeta, even prior to fully setting things up.
 
@@ -85,7 +85,7 @@ The [Button example](examples/button-experiment) is designed to help you get com
 
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. In other words, it needs to be linked to a datastore of some type. This reliance on a datastore isn't unique to AlphaBeta - it is true of split testing in general.
 
-Imagine that you're running an experiment to see if changing a particular button from a transparent background (variant A) to a solid blue background (variant B) leads to more clicks. (If you're already looked at the [Button example](examples/button-experiment), this should look familiar...)
+Imagine that you're running an experiment to see if changing a particular button from a transparent background (variant A) to a solid blue background (variant B) leads to more clicks. (If you already looked at the [Button example](examples/button-experiment), this should look familiar...)
 
 To measure which variant performs better, you need to keep track of each variant's "impressions" (how many users have seen each button) and "conversions" (how many times each button is clicked).
 
@@ -105,18 +105,18 @@ AlphaBeta will both POST to and GET from this endpoint. When AlphaBeta detects a
 
 You can safely restrict GET requests to only allow access to users who should be able to see data about your experiments.
 
-It's also a good idea (though not strictly necessary) to set up your endpoint such that GET requests made without an `{{experimentId}}` return a list of your experiments. This is a good first if you wish to build a single page where you can view data about all of our experiments.
+It's also a good idea (though not strictly necessary) to set up your endpoint such that GET requests made without an `{{experimentId}}` return a list of your experiments. This is a good idea if you wish to build a single page where you can view data about all of our experiments.
 
 **Ensure Your Endpoint Accepts POST Requests Correctly**
 
-When AlphaBeta POST's data to your endpoint, the POST body should look like this:
+When AlphaBeta POST data to your endpoint, the POST body should look like this:
   
 ```js
 {
-    variant: "a",   // this will either be "a" or "b"
-    success: null,  // this will either be null or true
-    userId: .10392  // a number between 0 and 1
-    metaId: null,   // this will be null unless you choose to set it
+    variant: "a",    // this will either be "a" or "b"
+    success: null,   // this will either be null or true
+    userId: .10392,  // a number between 0 and 1
+    metaId: null,    // this will be null unless you choose to set it
 }
 ```
 
@@ -134,7 +134,7 @@ When AlphaBeta POST's data to your endpoint, the POST body should look like this
 
   Imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views in his/her news feed should have a "like" (or "+1) button below it. But since each user has multiple items in his/her feed, a single user could "like" more than one piece of content.
 
-  In this case, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you were to set the **metaId**, you would be testing which variant leads to more total likes per unit of content seen. If you wer to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
+  In this case, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you were to set the **metaId**, you would be testing which variant leads to more total likes per unit of content seen. If you were to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
 
 **Ensure Your Endpoint Responds to GET Requests Correctly**
 
@@ -148,7 +148,7 @@ When AlphaBeta GETs data from your endpoint, the returned data should look like 
   variantB: {
     trialCount:   101,
     successCount: 22,
-  }
+  },
   confidenceInterval: .95 // the CI you're looking to achieve, expressed as a float
 }
 ```
@@ -167,11 +167,11 @@ When POST data is received, one of three things is supposed to happen:
 
 The logic for what should happen must be executed by your application's backend. Here's how things should work:
 
-  > * if `success` === `null` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
-  > 
-  > * if `success` === `true` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
-  >
-  > * in all other cases, you should not take any action.
+  * if `success` === `null` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
+  
+  * if `success` === `true` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
+  
+  * in all other cases, you should not take any action.
 
 #### Step 3:
 
@@ -205,9 +205,9 @@ ReactDOM.render(
 
 One easy way to familiarize yourself with the DevTools component is to load the [Button example](examples/button-experiment).
 
-If the DevTools component is included on your page and you are not in a production environment (i.e. process.env.NODE_ENV !== 'production), you should see a DevTools box in the lower right hand corner of your screen. This box lets you control your user cohort value for each of the experiments on the page. Recall that the user cohort value for an experiment, along with the _testCohortSize_ parameter, determine which variant a user sees.
+If the DevTools component is included on your page and you are not in a production environment (i.e. `process.env.NODE_ENV !== 'production'`), you should see a DevTools box in the lower right hand corner of your screen. This box lets you control your user cohort value for each of the experiments on the page. Recall that the user cohort value for an experiment, along with the `testCohortSize` parameter, determine which variant a user sees.
 
-If the user cohort value is greater than or equal to _testCohortSize_, the user will see variant A for this experiment. If the user cohort value is less than _testCohortSize_, the user will see variant B. When you manipulate the DevTools sliders, you are changing your user cohort value for an experiment. These changes will take place when you refresh the page.
+If the user cohort value is greater than or equal to `testCohortSize`, the user will see variant A for this experiment. If the user cohort value is less than `testCohortSize`, the user will see variant B. When you manipulate the DevTools sliders, you are changing your user cohort value for an experiment. These changes will take place when you refresh the page.
 
 You can add the DevTools component to the lower level components that contain your experiments, or to higher level components of your application.
 
