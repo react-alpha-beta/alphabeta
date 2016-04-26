@@ -29,7 +29,7 @@ So when should you use the _Test 1_ pattern and when should you use the _Test 2_
 
 In addition to the two variants you pass to AlphaBeta, you also need to pass your `experimentParams`. `experimentParams` is an object with two keys - `id` and `testCohortSize`. Let's take a look at what each does:
 
-  * **`id`**: Each of your experiments must have a unique `id`. The `id` will be sent to the AlphaBeta endpoint you set up, and will be used by your back end to uniquely identify this test and record it's data.
+  * **`id`**: Each of your experiments must have a unique `id`. The `id` will be sent to the AlphaBeta endpoint you set up, and will be used by your back end to uniquely identify this test and record its data.
 
   If you haven't set up set up the endpoint that AlphaBeta will consume yet, follow the steps outlined in [#backend--api-setup](https://github.com/react-alpha-beta/alphabeta#backend--api-setup) and do that first - Otherwise AlphaBeta won't work!.
 
