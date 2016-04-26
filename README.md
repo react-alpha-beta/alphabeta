@@ -157,19 +157,30 @@ When AlphaBeta GETs data from your endpoint, the returned data should look like 
 
 **Ensure Your Endpoint Processes POST Requests Correctly**
 
-  When POST data is received, one of two things may happen - the `trialCount` for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. (Note: that there is no case where they both will be incremented in the same call). The logic for which value is incremented and when must be executed by your application's backend, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
+When POST data is received, one of three things is supposed to happen:
 
-  > * if success === null and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment trialCount for the appropriate variant.
+  1 - the `trialCount` for an experiment variant could be incremented by 1.
+
+  2 - the `successCount` for an experiment could be incremented by 1.
+
+  3 - Nothing at all.
+
+The logic for what should happen must be executed by your application's backend. Here's how things should work:
+
+  > * if `success` === `null` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
   > 
-  > * if success === true and no previous trial exists where both userId and metaId are equal to this trial's values, you should increment successCount for the appropriate variant.
+  > * if `success` === `true` and no previous trial exists where both `userId` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
   >
-  > * in all other cases, you should not increment either value.
+  > * in all other cases, you should not take any action.
 
-  **Step 3:** Point AlphaBeta to that endpoint.
+#### Step 3:
 
-  By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
+**Make Sure AlphaBeta is Pointed To Your Endpoint**
+
+By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
 ## Example
+
 *Note: in order for this example to work, you must first set up an API endpoint for AlphaBeta to consume. If you haven't done this yet, follow the steps in [Backend / API Setup](README.md#backend--api-setup)*
 
 * [Button example](examples/button-experiment): Set up an experiment to see which of two button variants has a greater click-through rate. This example covers (i) basic experiment setup, (ii) the two ways to pass your variant components to the AlphaBeta component, and (iii) basic useage of the AlphaBeta DevTools.
