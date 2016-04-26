@@ -7,10 +7,7 @@ import React from 'react';
 
 import { isInCohort } from './Cohort';
 import { localStorageKey } from './constants';
-import {
-  getExperimentData,
-  postExperimentData,
-} from './Experiment';
+import { postExperimentData } from './Experiment';
 
 class ABComponent extends React.Component {
   static displayName = 'ABComponent';
