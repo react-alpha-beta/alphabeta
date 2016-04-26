@@ -85,7 +85,7 @@ The [Button example](examples/button-experiment) is designed to help you get com
 
 In order for AlphaBeta to be useful, it needs to be able to record data about the experiments you're running. In other words, it needs to be linked to a datastore of some type. This reliance on a datastore isn't unique to AlphaBeta - it is true of split testing in general.
 
-Imagine that you're running an experiment to see if changing a particular button from a transparent background (variant A) to a solid blue background (variant B) leads to more clicks. If you're already looked at the [Button example](examples/button-experiment), you're aware that this is what we're testing in "Experiment 1" of that example.
+Imagine that you're running an experiment to see if changing a particular button from a transparent background (variant A) to a solid blue background (variant B) leads to more clicks. (If you're already looked at the [Button example](examples/button-experiment), this should look familiar...)
 
 To measure which variant performs better, you need to keep track of each variant's "impressions" (how many users have seen each button) and "conversions" (how many times each button is clicked).
 
@@ -95,56 +95,67 @@ When we are able to keep track of these values, all it takes is a bit of math to
 
 You can connect AlphaBeta to a datastore you're already using in three steps.
 
-  **Step 1:** Build an endpoint to record and retrieve data from AlphaBeta
-  
-  If the hostname/stem of your endpoint is located at `www.yoursite.com/api/alphabeta/`, as users interacting with your your experiments a POST request (with a JSON blob) is sent to `www.yoursite.com/api/alphabeta/{{experimentId}}/` and then to retrive aggergate data a GET request is made to the same address `www.yoursite.com/api/alphabeta/{{experimentId}}/`
+#### Step 1:
 
-  The stem for your endpoint can be whatever you want it to be, but it must be able to accept a parameter at the end of its "path" section representing an `experimentId`.
+**Set up an API endpoint for AlphaBeta to Consume**
   
-  (You should also have the stem (the url when no `experimentId` is passed) return a list of your experiments. This is not required, but will be useful for building a page where you can view all of your experiments.)
+AlphaBeta expects to be able to interact with an endpoint at `www.yoursite.com/api/alphabeta/{{experimentId}}/`, where `{{experimentId}}` is the unique `id` you pass to each AlphaBeta component in `experimentParams`.
 
-  When AlphaBeta POST's data to your endpoint, the POST body should look like this:
+AlphaBeta will both POST to and GET from this endpoint. When AlphaBeta detects an "impression" or a "conversion", it will POST to this endpoint, so all users who may encounter an experiment should be able to POST to this endpoint.
+
+You can safely restrict GET requests to only allow access to users who should be able to see data about your experiments.
+
+It's also a good idea (though not strictly necessary) to set up your endpoint such that GET requests made without an `{{experimentId}}` return a list of your experiments. This is a good first if you wish to build a single page where you can view data about all of our experiments.
+
+**Ensure Your Endpoint Accepts POST Requests Correctly**
+
+When AlphaBeta POST's data to your endpoint, the POST body should look like this:
   
-  ```js
-  {
-      variant: "a",   // this will either be "a" or "b"
-      success: null,  // this will either be null or true
-      userId: .10392  // a number between 0 and 1
-      metaId: null,   // this will be null unless you choose to set it
+```js
+{
+    variant: "a",   // this will either be "a" or "b"
+    success: null,  // this will either be null or true
+    userId: .10392  // a number between 0 and 1
+    metaId: null,   // this will be null unless you choose to set it
+}
+```
+
+  * `variant` tells your datastore which component variant (A or B) was presented to a particular user.
+
+  * `success` tells your datastore whether the success event occured (`true`) or not (`null`).
+
+    (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When `success` is passed as `null`, that signals that an impression has occured. It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When `success` is passed as `true`, that signals that a success event has occured.)
+  
+  * `userId` is a number between 0.0 and 1.0 that AlphaBeta has associated with the particular user in this experiment. We also refer to this number as the "user cohort value", as it's core to how AlphaBeta seperates users into cohorts. It is automatically generated, and has nothing to do with any other userIds that may be used elsewhere in your application.
+
+  * `metaId` is a value that you can optionally pass to your AlphaBeta component. It should be used in cases where the component that you're testing occurs more than one time times on your site.
+
+  Here is an example of when you would set the `metaId` attribute:
+
+  Imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views in his/her news feed should have a "like" (or "+1) button below it. But since each user has multiple items in his/her feed, a single user could "like" more than one piece of content.
+
+  In this case, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you were to set the **metaId**, you would be testing which variant leads to more total likes per unit of content seen. If you wer to not set the `metaId`, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
+
+**Ensure Your Endpoint Responds to GET Requests Correctly**
+
+When AlphaBeta GETs data from your endpoint, the returned data should look like this
+```js
+{
+  variantA: {
+    trialCount:   291,  // the number of unique impressions for this variant
+    successCount: 59,   // the number of unique success events for this variant
+  },
+  variantB: {
+    trialCount:   101,
+    successCount: 22,
   }
-  ```
+  confidenceInterval: .95 // the CI you're looking to achieve, expressed as a float
+}
+```
 
-  * **variant** tells your datastore which component variant (A or B) was presented to a particular user.
+#### Step 2:
 
-  * **success** tells your datastore whether the success event occured (`true`) not (`null`).
-
-  (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When **success** is passed as `null`, that signals that an sample event has occured (a user saw one variant - A or B - of the thing that you're testing). It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When **success** is passed as `true`, that signals that a success event has occured.)
-  
-  **userId** is a number between 0 and 1 that AlphaBeta has associated with the particular user in this experiment. It has nothing to do with any other userIds that might be used elsewhere in your application.
-
-For this simple experiment **metaId** can be `null`, however for more complex experiments see below:
-  * **metaId** is a value that you can optionally pass to your AlphaBeta component, and is useful in situations where the component that you're testing occurs multiple times on your site.
-
-  The earlier example where we were testing the color of a "Sign Up" button on your landing page would be a case where the **metaId** property is (probably) not necessary, as user will only see the Sign Up button in one context.
-
-  But imagine you instead were testing the copy on a Facebook-style "like" button to see if changing "like" to "+1" led to more engagement. Each piece of content a user views has a "like" (or "+1) button below it, and a single user could see (and "like") more than one piece of content. In cases like these, you could set a **metaId** that uniquely identfies the piece of content being "liked". If you use the **metaId** in this way, you would be testing which variant leads to more total likes per piece of content seen. If you did not set the **metaId** at all, you would be testing which variant is more likely to lead to a user liking at least one piece of content.
-
-  When AlphaBeta GETs data from your endpoint, the returned data should look like this
-  ```js
-  {
-      variantA: {
-          trialCount:   291,  // the number of times this variant has been seen
-          successCount: 59,   // the number of times the success event has occured
-      },
-      variantB: {
-          trialCount:   101,
-          successCount: 22,
-      }
-      confidenceInterval: .95 // the CI you're looking to achieve, expressed as a float
-  }
-  ```
-
-  **Step 2:** Code out what happens when data is POST'ed to that endpoint.
+**Ensure Your Endpoint Processes POST Requests Correctly**
 
   When POST data is received, one of two things may happen - the `trialCount` for an experiment variant could be incremented by 1, or the success count for an experiment could be incremented by 1. It's also possible that neither value is incremented. (Note: that there is no case where they both will be incremented in the same call). The logic for which value is incremented and when must be executed by your application's backend, and requires that you maintain data about previously received trials in a queriable format. Here's how it should work:
 
