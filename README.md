@@ -55,6 +55,17 @@ ReactDOM.render(
 );
 ```
 
+**Your experiment results will look something like this:**
+
+```js
+{
+  meanDifferenceValue: -0.05023923444976075,
+  marginOfError: 0.04837299277280508,
+  statisticalSignificance: true,
+  details: "Our best estimate is that the absolute rate of success is 5% lower with variant B, and this result is statistically significant (We are 95% confident the true difference is between -10% and 0%.). Given this information, you should probably stick with variant A.",
+}
+```
+
 ## Installation
 
 ```bash
