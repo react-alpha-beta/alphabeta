@@ -212,6 +212,7 @@ If the user cohort value is greater than or equal to _testCohortSize_, the user 
 You can add the DevTools component to the lower level components that contain your experiments, or to higher level components of your application.
 
 ## Discussion and Support
+Join our [Slack team](http://alphabeta.launchrock.com/)!
 
 ## Additional Resources
 * [A/B testing course (Udacity)](https://www.udacity.com/course/viewer#!/c-ud257)
