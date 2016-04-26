@@ -179,6 +179,36 @@ The logic for what should happen must be executed by your application's backend.
 
 By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta`. If you would like AlphaBeta to look somewhere other than this location, just define your `ALPHA_BETA_ENDPOINT` environment variable.
 
+## Checking Your Experiment Results
+
+```js
+import { getExperimentData } from 'react-alphabeta';
+
+console.log(getExperimentData(experimentId));
+```
+
+To view your experiment results, call the `getExperimentData` function with the `experimentId` for a particular experiment. It will return a json object with the keys `meanDifferenceValue`, `marginOfError`, `statisticalSignificance`, and `details`.
+
+  * `meanDifferenceValue` is AlphaBeta's best estimate (or mean estimate) of ComponentB's performance relative to ComponentA. A positive number indicates that ComponentB is leading to more successActions per impression than ComponentA, while a negative number indicates the opposite.
+
+  Note that `meanDifferenceValue` alone doesn't mean much if the experiment hasn't yet reached statistical significance.
+
+  * `marginOfError` is the margin of error (or uncertainty) that exists in the experiment.
+
+  * `statisticalSignificance`, a boolean, represents whether this experiment has yet reached statistical significance at the level of confidence you defined.
+
+  * `details` is a human readable description of this experiment's current results.
+
+Sample result from `getExperimentData`:
+```
+{
+  meanDifferenceValue: -0.05023923444976075,
+  marginOfError: 0.04837299277280508,
+  statisticalSignificance: true,
+  details: "Our best estimate is that the absolute rate of success is 5% lower with variant B, and this result is statistically significant (We are 95% confident the true difference is between -10% and 0%.). Given this information, you should probably stick with variant A.",
+}
+```
+
 ## Example
 
 *Note: in order for this example to work, you must first set up an API endpoint for AlphaBeta to consume. If you haven't done this yet, follow the steps in [Backend / API Setup](README.md#backend--api-setup)*
