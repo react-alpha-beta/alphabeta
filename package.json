@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "\"`npm bin`\"/eslint --ext .js,.jsx .",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
-    "build:lib": "babel ./src -d lib",
+    "build:lib": "\"`npm bin`\"/babel  ./src -d lib",
     "build:umd": "NODE_ENV=development NODE_PATH=`pwd`:$NODE_PATH \"`npm bin`\"/webpack ./src/index.js ./dist/AlphaBeta.js",
     "build:umd:min": "NODE_ENV=production NODE_PATH=`pwd`:$NODE_PATH \"`npm bin`\"/webpack -p ./src/index.js ./dist/AlphaBeta.min.js",
     "test": "NODE_ENV=test \"`npm bin`\"/mocha --require ./test/hook --check-leaks --recursive --reporter spec --ui bdd ./test/*.spec.js",
@@ -45,6 +45,7 @@
     "react-dom": "^15.0.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.7.7",
     "babel-core": "^6.7.7",
     "babel-eslint": "^6.0.3",
     "babel-loader": "^6.2.4",
