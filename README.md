@@ -12,7 +12,7 @@ AlphaBeta is...
 **Building your first A/B test is simple:**
 
 ```js
-import { ABComponent } from 'react-alphabeta';
+import { ABComponent } from 'react-alpha-beta';
 
 class ButtonA extends React.Component {
   render() {
@@ -69,7 +69,7 @@ ReactDOM.render(
 ## Installation
 
 ```bash
-$ npm install react-alphabeta --save
+$ npm install react-alpha-beta --save
 ```
 
 ## Overview and Basic Usage
@@ -193,7 +193,7 @@ By default, AlphaBeta will look for your endpoint at `yoursite.com/api/alphabeta
 ## Checking Your Experiment Results
 
 ```js
-import { getExperimentData } from 'react-alphabeta';
+import { getExperimentData } from 'react-alpha-beta';
 
 console.log(getExperimentData(experimentId));
 ```
@@ -231,7 +231,7 @@ Sample result from `getExperimentData`:
 AlphaBeta comes with a DevTools component that can be used on any page containing an experiment.
 
 ```js
-import { ABComponent, DevTools } from 'react-alphabeta';
+import { ABComponent, DevTools } from 'react-alpha-beta';
 
 // ***
 // Build your experiment component, which we'll call <Page /> here.
