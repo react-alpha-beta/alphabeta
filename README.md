@@ -55,7 +55,7 @@ ReactDOM.render(
 );
 ```
 
-**and your experiment results will look something like this**
+**Your experiment results will look something like this:**
 
 ```js
 {
