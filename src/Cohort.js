@@ -15,6 +15,11 @@ import { localStorageKey } from './constants';
 export function isInCohort(experimentParams) {
   const experimentId = experimentParams.id;
 
+  // If the user doesn't have localStorage, do a 50/50 if they are in the cohort
+  if (typeof(global.localStorage) === 'undefined') {
+    return Math.random() < 0.5;
+  }
+
   // Retrieve from storage or create experiment registery
   let alphaBetaMap;
   try {
