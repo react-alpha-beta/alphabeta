@@ -1,6 +1,6 @@
 # AlphaBeta
 
-AlphaBeta lets you build split tests (A/B tests) directly into 
+AlphaBeta lets you build split tests (A/B tests) directly into
 your React app.
 
 AlphaBeta is...
@@ -16,8 +16,8 @@ import { ABComponent } from 'react-alpha-beta';
 
 class ButtonA extends React.Component {
   render() {
-    return (<Button onClick={this.props.successAction} 
-                    style={{'background-color':'blue'}}/>
+    return (<Button onClick={this.props.successAction}
+                    style={{'background-color':'blue'}}>
               "Sign Up"
             </Button>);
   }
@@ -25,8 +25,8 @@ class ButtonA extends React.Component {
 
 class ButtonB extends React.Component {
   render() {
-    return (<Button onClick={this.props.successAction} 
-                    style={{'background-color':'orange'}}/>
+    return (<Button onClick={this.props.successAction}
+                    style={{'background-color':'orange'}}>
               "Sign Up"
             </Button>);
   }
@@ -109,7 +109,7 @@ You can connect AlphaBeta to a datastore you're already using in two steps.
 #### Step 1:
 
 **Set up an API endpoint for AlphaBeta to Consume**
-  
+
 AlphaBeta expects to be able to interact with an endpoint at `www.yoursite.com/api/alphabeta/{{experimentId}}/`, where `{{experimentId}}` is the unique `id` you pass to each AlphaBeta component in `experimentParams`.
 
 AlphaBeta will both POST to and GET from this endpoint. When AlphaBeta detects an "impression" or a "conversion", it will POST to this endpoint, so all users who may encounter an experiment should be able to POST to this endpoint.
@@ -121,7 +121,7 @@ It's also a good idea (though not strictly necessary) to set up your endpoint su
 **Ensure Your Endpoint Accepts POST Requests Correctly**
 
 When AlphaBeta POST data to your endpoint, the POST body should look like this:
-  
+
 ```js
 {
     variant: "a",             // this will either be "a" or "b"
@@ -136,7 +136,7 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
   * `success` tells your datastore whether the success event occured (`true`) or not (`null`).
 
     (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When `success` is passed as `null`, that signals that an impression has occurred. It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When `success` is passed as `true`, that signals that a success event has occurred.)
-  
+
   * `userCohortValue` is a number between 0.0 and 1.0 that AlphaBeta has associated with the particular user in this experiment. This number is randomly generated the first time a user encounters a particular AlphaBeta experiment, and is core to how AlphaBeta separates users into cohorts.
 
   * `metaId` is a value that you can optionally pass to your AlphaBeta component. It should be used in cases where the component that you're testing occurs more than one time times on your site.
@@ -179,9 +179,9 @@ When POST data is received, one of three things is supposed to happen:
 The logic for what should happen must be executed by your application's backend. Here's how things should work:
 
   * if `success` === `null` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values, you should increment `trialCount` by one for the appropriate variant.
-  
+
   * if `success` === `true` and no previous trial exists where both `userCohortValue` and `metaId` are equal to this trial's values and `success` === `true`, you should increment `successCount` by one for the appropriate variant.
-  
+
   * in all other cases, you should not take any action.
 
 ## Checking Your Experiment Results
@@ -268,7 +268,7 @@ $ npm run test:cov    # generate test coverage report
 ## Contribute
 We are using [commitizen](https://commitizen.github.io/cz-cli/) to make commit format consistent.
 ```bash
-# Install the command line tool. 
+# Install the command line tool.
 $ npm install -g commitizen
 
 # From then on, whenever you would like to commit:
