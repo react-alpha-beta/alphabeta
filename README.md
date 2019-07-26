@@ -133,7 +133,7 @@ When AlphaBeta POST data to your endpoint, the POST body should look like this:
 
   * `variant` tells your datastore which component variant (A or B) was presented to a particular user.
 
-  * `success` tells your datastore whether the success event occured (`true`) or not (`null`).
+  * `success` tells your datastore whether the success event occurred (`true`) or not (`null`).
 
     (Note that the value for this parameter will either be `true` or `null`, as opposed to `true` or `false`. When `success` is passed as `null`, that signals that an impression has occurred. It is passed as `null` because when the component is loaded we don't know if the user will trigger the success event or not. When `success` is passed as `true`, that signals that a success event has occurred.)
 
@@ -218,7 +218,7 @@ Sample result from `getExperimentData`:
 
 *Note: in order for this example to work, you must first set up an API endpoint for AlphaBeta to consume. If you haven't done this yet, follow the steps in [Backend / API Setup](README.md#backend--api-setup)*
 
-* [Button example](examples/button-experiment): Set up an experiment to see which of two button variants has a greater click-through rate. This example covers (i) basic experiment setup, (ii) the two ways to pass your variant components to the AlphaBeta component, and (iii) basic useage of the AlphaBeta DevTools.
+* [Button example](examples/button-experiment): Set up an experiment to see which of two button variants has a greater click-through rate. This example covers (i) basic experiment setup, (ii) the two ways to pass your variant components to the AlphaBeta component, and (iii) basic usage of the AlphaBeta DevTools.
 
 ## AlphaBeta DevTools
 
